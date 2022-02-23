@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">android</string>
+    <string name="title">Fear and Greed Index bitcoin</string>
+    <string name="value">Value</string>
+    <string name="classification">Classification</string>
+    <string name="timestamp">Timestamp</string>
+    <string name="next_update">Next update</string>
+    <string name="loading">...</string>
+    <string name="easter_egg">Hello world!</string>
+</resources>
