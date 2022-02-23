@@ -53,8 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun moveToEasterEggActivity(view: View) {
-        val intent = Intent(this, EasterEggActivity::class.java).apply {
-        }
+        val intent = Intent(this, EasterEggActivity::class.java)
         startActivity(intent)
     }
 }
