@@ -17,8 +17,6 @@ import {
   View,
 } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -27,8 +25,24 @@ const App: () => Node = () => {
   const [timestamp, setTimestamp] = React.useState('..');
   const [nextUpdate, setNextUpdate] = React.useState('..');
 
+  const [isHello, setIsHello] = React.useState(false);
+
+  React.useEffect(() => {
+    fetch('https://api.alternative.me/fng/')
+      .then(response => response.json())
+      .then(json => {
+        setValue(json.data[0].value);
+        setClassification(json.data[0].value_classification);
+        setTimestamp(json.data[0].timestamp);
+        setNextUpdate(json.data[0].time_until_update);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: '#07090D',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -55,22 +69,35 @@ const App: () => Node = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={backgroundStyle}>
-        <Text style={[textStyle, {fontSize: 30, textAlign: 'center'}]}>
-          Fear And Greed Index
-        </Text>
-        <Pressable style={btnStyle} onPress={() => console.log('SHIT')}>
-          <Text style={[textStyle, {fontSize: 60, textAlign: 'center'}]}>
-            {value}
-          </Text>
-        </Pressable>
-        <View style={{width: '100%'}}>
-          <InfoRow attribute="Value" value={value} />
-          <InfoRow attribute="Classification" value={classification} />
-          <InfoRow attribute="Timestamp" value={timestamp} />
-          <InfoRow attribute="Next update" value={nextUpdate} />
+      {isHello ? (
+        <View
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%',
+          }}>
+          <Text style={textStyle}>Hello World!</Text>
         </View>
-      </View>
+      ) : (
+        <View style={backgroundStyle}>
+          <Text style={[textStyle, {fontSize: 30, textAlign: 'center'}]}>
+            Fear And Greed Index
+          </Text>
+          <Pressable style={btnStyle} onPress={() => setIsHello(true)}>
+            <Text style={[textStyle, {fontSize: 60, textAlign: 'center'}]}>
+              {value}
+            </Text>
+          </Pressable>
+          <View style={{width: '100%'}}>
+            <InfoRow attribute="Value" value={value} />
+            <InfoRow attribute="Classification" value={classification} />
+            <InfoRow attribute="Timestamp" value={timestamp} />
+            <InfoRow attribute="Next update" value={nextUpdate} />
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
