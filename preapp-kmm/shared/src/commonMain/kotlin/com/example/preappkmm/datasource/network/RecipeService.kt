@@ -1,4 +1,4 @@
-package com.example.preappkmm.datasource
+package com.example.preappkmm.datasource.network
 
 import com.example.preappkmm.domain.model.Recipe
 

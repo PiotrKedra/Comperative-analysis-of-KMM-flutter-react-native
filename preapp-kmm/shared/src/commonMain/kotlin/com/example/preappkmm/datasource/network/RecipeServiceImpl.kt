@@ -1,9 +1,7 @@
-package com.example.preappkmm.datasource
+package com.example.preappkmm.datasource.network
 
 import com.example.preappkmm.datasource.network.network.model.RecipeDto
 import com.example.preappkmm.datasource.network.network.model.RecipeSearchResponseDto
-import com.example.preappkmm.datasource.network.toRecipe
-import com.example.preappkmm.datasource.network.toRecipeList
 import com.example.preappkmm.domain.model.Recipe
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -11,7 +9,7 @@ import io.ktor.client.request.*
 class RecipeServiceImpl(
     private val httpClient: HttpClient,
     private val baseUrl: String,
-):RecipeService {
+): RecipeService {
     override suspend fun search(page: Int, query: String): List<Recipe> {
         return httpClient.get<RecipeSearchResponseDto>{
             url("$baseUrl/search?page=$page&query=$query")
@@ -29,5 +27,6 @@ class RecipeServiceImpl(
     companion object {
         const val TOKEN = "Token 9c8b06d329136da358c2d00e76946b0111ce2c48"
         const val BASE_URL = "https://food2fork.ca/api/recipe"
+        const val RECIPE_PAGINATION_PAGE_SIZE = 0
     }
 }

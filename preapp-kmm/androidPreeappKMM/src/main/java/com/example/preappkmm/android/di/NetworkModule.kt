@@ -1,8 +1,8 @@
 package com.example.preappkmm.android.di
 
-import com.example.preappkmm.datasource.RecipeService
-import com.example.preappkmm.datasource.RecipeServiceImpl
-import com.example.preappkmm.datasource.RecipeServiceImpl.Companion.BASE_URL
+import com.example.preappkmm.datasource.network.RecipeService
+import com.example.preappkmm.datasource.network.RecipeServiceImpl
+import com.example.preappkmm.datasource.network.RecipeServiceImpl.Companion.BASE_URL
 import com.example.preappkmm.datasource.network.KtorClientFactory
 import dagger.Module
 import dagger.Provides

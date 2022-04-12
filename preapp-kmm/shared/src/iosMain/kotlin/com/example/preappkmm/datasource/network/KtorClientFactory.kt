@@ -11,7 +11,7 @@ actual class KtorClientFactory actual constructor() {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(
                     kotlinx.serialization.json.Json {
-                        ignoreUnknownKeys=true
+                        ignoreUnknownKeys = true
                     }
                 )
             }

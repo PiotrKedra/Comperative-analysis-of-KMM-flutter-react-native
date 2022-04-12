@@ -22,7 +22,7 @@ class RecipeListViewModel @Inject constructor(
     private fun loadRecipes() {
         searchRecipes.execute(
             page = 1,
-            query = "chicken"
+            query = ""
         ).onEach { dataState ->
             println("RecipeListVM loading: ${dataState.isLoading}")
 
