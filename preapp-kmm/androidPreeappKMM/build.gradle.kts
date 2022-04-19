@@ -43,6 +43,7 @@ dependencies {
 //    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
     implementation(AndroidX.appCompat)
 
+    implementation(Coil.coil)
     implementation(Compose.runtime)
     implementation(Compose.runtimeLiveData)
     implementation(Compose.ui)

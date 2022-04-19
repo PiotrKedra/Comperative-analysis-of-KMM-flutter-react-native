@@ -1,6 +1,8 @@
 package com.example.preappkmm.android.presentation.navigation
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -14,6 +16,8 @@ import com.example.preappkmm.android.presentation.recipe_list.RecipeListViewMode
 
 const val RECIPE_ID = "recipeId"
 
+@ExperimentalComposeUiApi
+@ExperimentalMaterialApi
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
