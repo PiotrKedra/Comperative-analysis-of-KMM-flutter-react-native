@@ -4,6 +4,7 @@ import com.example.preappkmm.datasource.cache.RecipeCache
 import com.example.preappkmm.datasource.network.RecipeService
 import com.example.preappkmm.domain.model.Recipe
 import com.example.preappkmm.domain.util.DataState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -19,6 +20,8 @@ class SearchRecipes(
                 page = page,
                 query = query
             )
+
+            delay(1000)
             recipeCache.insert(recipe)
 
             val cacheResult = if(query.isBlank()) {
@@ -29,7 +32,8 @@ class SearchRecipes(
                     page=page
                 )
             }
-            emit(DataState.data<List<Recipe>>(message = null, data = cacheResult))
+
+            emit(DataState.data<List<Recipe>>(message = null, data = recipe))
         } catch (e: Exception) {
             emit(DataState.error<List<Recipe>>(message = e.message ?: "Unknown Error"))
         }

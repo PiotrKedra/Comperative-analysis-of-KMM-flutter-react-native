@@ -8,8 +8,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.preappkmm.android.presentation.components.RecipeImage
+import com.example.preappkmm.android.presentation.theme.Black1
 import com.example.preappkmm.domain.model.Recipe
 
 @Composable
@@ -18,9 +20,9 @@ fun RecipeCard(
     onClick: () -> Unit,
 ) {
     Card(
-        shape = MaterialTheme.shapes.small,
+        shape = MaterialTheme.shapes.large,
         modifier = Modifier
-            .padding(bottom = 6.dp, top = 6.dp,)
+            .padding(top=16.dp, start=16.dp, end=16.dp)
             .fillMaxWidth()
             .clickable(onClick = onClick),
         elevation = 8.dp
@@ -30,22 +32,23 @@ fun RecipeCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp, bottom = 12.dp, start = 8.dp, end = 8.dp)
+                    .padding(top = 12.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
             ) {
                 Text(
                     text = recipe.title,
                     modifier = Modifier
                         .fillMaxWidth(0.85f)
                         .wrapContentWidth(Alignment.Start),
-                    style = MaterialTheme.typography.h3
+                    style = MaterialTheme.typography.h4
                 )
                 Text(
                     text=recipe.rating.toString(),
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentWidth(Alignment.End)
-                        .align(Alignment.CenterVertically),
-                    style = MaterialTheme.typography.h5
+                        .align(Alignment.Top),
+                    style = MaterialTheme.typography.h4,
+                    color = Black1
                 )
             }
         }
