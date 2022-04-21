@@ -21,7 +21,7 @@ class SearchRecipes(
                 query = query
             )
 
-            delay(1000)
+            delay(4000)
             recipeCache.insert(recipe)
 
             val cacheResult = if(query.isBlank()) {
