@@ -28,10 +28,18 @@ fun Navigation() {
 
             RecipeListScreen(
                 state = viewModel.state.value,
+                onTriggerEvent = viewModel::onTriggerEvent,
                 onClickRecipeListItem = { recipeId ->
-                    navController.navigate(Screen.RecipeDetail.route + "/$recipeId")
+                    navController.navigate("${Screen.RecipeDetail.route}/$recipeId")
                 }
             )
+
+//              these two are the same:
+//                onTriggerEvent = viewModel::onTriggerEvent,
+//                onTriggerEvent = {
+//                                 viewModel.onTriggerEvent(it)
+//                },
+
         }
         composable(
             route = Screen.RecipeDetail.route + "/{$RECIPE_ID}",

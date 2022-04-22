@@ -14,15 +14,17 @@ class SearchRecipes(
 ) {
     fun execute(page: Int, query: String): Flow<DataState<List<Recipe>>> = flow {
 
-        emit(DataState.loading<List<Recipe>>())
+        emit(DataState.loading())
         try {
             val recipe = recipeService.search(
                 page = page,
                 query = query
             )
 
-            delay(4000)
+            delay(500)
             recipeCache.insert(recipe)
+
+            println(recipe)
 
             val cacheResult = if(query.isBlank()) {
                 recipeCache.getAll(page=page)

@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.preappkmm.domain.model.Recipe
+import com.example.preappkmm.interactors.recipe_list.RecipeListEvents
 import com.example.preappkmm.interactors.recipe_list.SearchRecipes
 import com.example.preappkmm.presentation.recipe_list.RecipeListState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,25 @@ class RecipeListViewModel @Inject constructor(
     val state: MutableState<RecipeListState> = mutableStateOf(RecipeListState())
 
     init {
+        onTriggerEvent(RecipeListEvents.LoadRecipes)
+    }
+
+    fun onTriggerEvent(event: RecipeListEvents) {
+        when(event){
+            RecipeListEvents.LoadRecipes -> {
+                loadRecipes()
+            }
+            RecipeListEvents.NextPage -> {
+                nextPage()
+            }
+            else -> {
+                handleError("Dummy error")
+            }
+        }
+    }
+
+    private fun nextPage() {
+        state.value = state.value.copy(page = state.value.page + 1)
         loadRecipes()
     }
 
@@ -47,5 +67,9 @@ class RecipeListViewModel @Inject constructor(
         val curr = ArrayList(state.value.recipes)
         curr.addAll(recipes)
         state.value = state.value.copy(recipes=curr)
+    }
+
+    private fun handleError(errorMessage: String) {
+        println(errorMessage)
     }
 }
