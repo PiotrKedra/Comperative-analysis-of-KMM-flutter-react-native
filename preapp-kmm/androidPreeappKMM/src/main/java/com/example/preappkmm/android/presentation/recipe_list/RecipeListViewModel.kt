@@ -34,6 +34,12 @@ class RecipeListViewModel @Inject constructor(
             RecipeListEvents.NextPage -> {
                 nextPage()
             }
+            RecipeListEvents.NewSearch -> {
+                newSearch()
+            }
+            is RecipeListEvents.OnUpdateQuery -> {
+                state.value = state.value.copy(query = event.query)
+            }
             else -> {
                 handleError("Dummy error")
             }
@@ -45,6 +51,11 @@ class RecipeListViewModel @Inject constructor(
         loadRecipes()
     }
 
+    private fun newSearch() {
+        state.value = state.value.copy(page = 1, recipes = listOf())
+        loadRecipes()
+    }
+
     private fun loadRecipes() {
         searchRecipes.execute(
             page = state.value.page,
@@ -52,7 +63,9 @@ class RecipeListViewModel @Inject constructor(
         ).onEach { dataState ->
             state.value = state.value.copy(isLoading = dataState.isLoading)
 
+
             dataState.data?.let { recipes ->
+                println(recipes)
                 appendRecipes(recipes)
             }
 

@@ -35,7 +35,9 @@ class SearchRecipes(
                 )
             }
 
-            emit(DataState.data<List<Recipe>>(message = null, data = recipe))
+            println(cacheResult)
+
+            emit(DataState.data<List<Recipe>>(message = null, data = cacheResult))
         } catch (e: Exception) {
             emit(DataState.error<List<Recipe>>(message = e.message ?: "Unknown Error"))
         }
