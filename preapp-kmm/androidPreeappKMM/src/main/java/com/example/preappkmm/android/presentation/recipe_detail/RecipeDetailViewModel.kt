@@ -54,7 +54,9 @@ class RecipeDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun handleError(errorMsg: String) {
-        println(errorMsg)
+    private fun handleError(errorMessage: String) {
+        val queue = state.value.queue
+        queue.add(errorMessage)
+        state.value = state.value.copy(queue = queue)
     }
 }

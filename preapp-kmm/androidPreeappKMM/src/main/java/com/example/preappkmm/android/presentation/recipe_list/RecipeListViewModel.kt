@@ -79,7 +79,7 @@ class RecipeListViewModel @Inject constructor(
             }
 
             dataState.message?.let { message ->
-                println("RecipeListVM message: $message")
+                handleError(message)
             }
 
         }.launchIn(viewModelScope)
@@ -92,6 +92,8 @@ class RecipeListViewModel @Inject constructor(
     }
 
     private fun handleError(errorMessage: String) {
-        println(errorMessage)
+        val queue = state.value.queue
+        queue.add(errorMessage)
+        state.value = state.value.copy(queue = queue)
     }
 }
