@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.preappkmm.android.presentation.components.IMAGE_HEIGHT
+import com.example.preappkmm.android.presentation.recipe_detail.components.LoadingRecipeShimmer
 import com.example.preappkmm.android.presentation.recipe_detail.components.RecipeView
 import com.example.preappkmm.android.presentation.theme.AppTheme
 import com.example.preappkmm.domain.model.Recipe
@@ -23,7 +25,7 @@ fun RecipeDetailScreen(
 ){
     AppTheme(displayProgressBar = state.isLoading) {
         if (state.recipe == null && state.isLoading) {
-            // loading
+            LoadingRecipeShimmer(imageHeight = IMAGE_HEIGHT.dp)
         } else if (state.recipe == null) {
             Text(
                 text = "We were unable to retrieve the details for this recipe..",
