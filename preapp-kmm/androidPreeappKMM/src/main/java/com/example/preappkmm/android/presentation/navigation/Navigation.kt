@@ -16,6 +16,7 @@ import com.example.preappkmm.android.presentation.recipe_list.RecipeListViewMode
 
 const val RECIPE_ID = "recipeId"
 
+@ExperimentalStdlibApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
@@ -49,7 +50,10 @@ fun Navigation() {
         ){ navBackStackEntry ->
             val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
             val viewModel: RecipeDetailViewModel = viewModel("RecipeDetailViewModel", factory)
-            RecipeDetailScreen(recipe = viewModel.recipe.value)
+            RecipeDetailScreen(
+                state = viewModel.state.value,
+                onTriggerEvent = viewModel::onTriggerEvent
+            )
         }
     }
 }
