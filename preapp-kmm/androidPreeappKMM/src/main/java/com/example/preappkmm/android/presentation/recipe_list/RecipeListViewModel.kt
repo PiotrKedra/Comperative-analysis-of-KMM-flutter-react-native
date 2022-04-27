@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.preappkmm.domain.model.Recipe
 import com.example.preappkmm.interactors.recipe_list.RecipeListEvents
 import com.example.preappkmm.interactors.recipe_list.SearchRecipes
+import com.example.preappkmm.presentation.recipe_list.FoodCategory
 import com.example.preappkmm.presentation.recipe_list.RecipeListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -38,12 +39,20 @@ class RecipeListViewModel @Inject constructor(
                 newSearch()
             }
             is RecipeListEvents.OnUpdateQuery -> {
-                state.value = state.value.copy(query = event.query)
+                state.value = state.value.copy(query = event.query, selectedCategory = null)
+            }
+            is RecipeListEvents.OnSelectCategory -> {
+                onSelectCategory(event.category)
             }
             else -> {
                 handleError("Dummy error")
             }
         }
+    }
+
+    private fun onSelectCategory(category: FoodCategory) {
+        state.value = state.value.copy(selectedCategory = category, query = category.value)
+        newSearch()
     }
 
     private fun nextPage() {
