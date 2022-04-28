@@ -2,7 +2,9 @@ package com.example.preappkmm.interactors.recipe_list
 
 import com.example.preappkmm.datasource.cache.RecipeCache
 import com.example.preappkmm.datasource.network.RecipeService
+import com.example.preappkmm.domain.model.GenericMessageInfo
 import com.example.preappkmm.domain.model.Recipe
+import com.example.preappkmm.domain.model.UIComponentType
 import com.example.preappkmm.domain.util.DataState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -44,7 +46,13 @@ class SearchRecipes(
 
             emit(DataState.data<List<Recipe>>(message = null, data = cacheResult))
         } catch (e: Exception) {
-            emit(DataState.error<List<Recipe>>(message = e.message ?: "Unknown Error"))
+            emit(DataState.error<List<Recipe>>(
+                message = GenericMessageInfo.Builder()
+                    .id("SearchRecipe.Error")
+                    .title("Error")
+                    .uiComponentType(UIComponentType.Dialog)
+                    .description(e.message?: "Unknow error")
+            ))
         }
     }
 

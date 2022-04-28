@@ -2,7 +2,9 @@ package com.example.preappkmm.interactors.recipe_details
 
 import com.example.preappkmm.datasource.cache.RecipeCache
 import com.example.preappkmm.datasource.network.RecipeService
+import com.example.preappkmm.domain.model.GenericMessageInfo
 import com.example.preappkmm.domain.model.Recipe
+import com.example.preappkmm.domain.model.UIComponentType
 import com.example.preappkmm.domain.util.DataState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +20,13 @@ class GetRecipe(
             val recipe = recipeCache.get(recipeId)
             emit(DataState.data<Recipe>(message = null, data = recipe))
         } catch (e: Exception) {
-            emit(DataState.error<Recipe>(message = e.message ?: "Unknown Error"))
+            emit(DataState.error<Recipe>(
+                message = GenericMessageInfo.Builder()
+                    .id("GetRecipe.Error")
+                    .title("Error")
+                    .uiComponentType(UIComponentType.Dialog)
+                    .description(e.message?: "Unknow error")
+            ))
         }
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.preappkmm.android.presentation.components.CircularLoading
 import com.example.preappkmm.android.presentation.components.ProcessDialogQueue
+import com.example.preappkmm.domain.model.GenericMessageInfo
 import com.example.preappkmm.domain.util.Queue
 
 private val LightThemeColors = lightColors(
@@ -32,8 +33,9 @@ private val LightThemeColors = lightColors(
 @Composable
 fun AppTheme(
     displayProgressBar: Boolean,
-    dialogQueue: Queue<String> = Queue(mutableListOf()),
-    content: @Composable () -> Unit,
+    dialogQueue: Queue<GenericMessageInfo> = Queue(mutableListOf()),
+    onRemoveHeadMessageFromQueue: () -> Unit,
+    content: @Composable () -> Unit
 ) {
     MaterialTheme(
         colors = LightThemeColors,
@@ -45,7 +47,7 @@ fun AppTheme(
                 .fillMaxSize()
                 .background(color = Grey1)
         ){
-            ProcessDialogQueue(dialogQueue=dialogQueue)
+            ProcessDialogQueue(dialogQueue=dialogQueue, onRemoveHeadMessageFromQueue=onRemoveHeadMessageFromQueue)
             content()
             CircularLoading(isDisplayed = displayProgressBar, verticalBias = 0.3f)
         }

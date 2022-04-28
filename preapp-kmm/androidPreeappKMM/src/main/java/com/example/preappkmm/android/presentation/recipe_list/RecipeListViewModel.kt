@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.preappkmm.domain.model.Recipe
+import com.example.preappkmm.domain.model.*
+import com.example.preappkmm.domain.util.GenericMessageInfoQueueUtil
+import com.example.preappkmm.domain.util.Queue
 import com.example.preappkmm.interactors.recipe_list.RecipeListEvents
 import com.example.preappkmm.interactors.recipe_list.SearchRecipes
 import com.example.preappkmm.presentation.recipe_list.FoodCategory
@@ -13,7 +15,9 @@ import com.example.preappkmm.presentation.recipe_list.RecipeListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
@@ -25,6 +29,32 @@ class RecipeListViewModel @Inject constructor(
 
     init {
         onTriggerEvent(RecipeListEvents.LoadRecipes)
+
+
+        val messageInfoBuilder  = GenericMessageInfo.Builder()
+            .id(UUID.randomUUID().toString())
+            .title("XDDD")
+            .uiComponentType(UIComponentType.Dialog)
+            .description("HELO FROM THE OTHER side")
+            .positive(
+                PositiveAction(
+                    positiveBtnTxt = "YOO",
+                    onPositiveAction = {
+                        state.value = state.value.copy(query = "Kale")
+                        onTriggerEvent(RecipeListEvents.NewSearch)
+                    }
+                )
+            )
+            .negative(
+                NegativeAction(
+                    negativeBtnTxt = "cancel",
+                    onNegativeAction = {
+                        state.value = state.value.copy(query = "bob")
+                        onTriggerEvent(RecipeListEvents.NewSearch)
+                    }
+                )
+            )
+        appendToMessageQueue(msgInfo = messageInfoBuilder)
     }
 
     fun onTriggerEvent(event: RecipeListEvents) {
@@ -44,8 +74,17 @@ class RecipeListViewModel @Inject constructor(
             is RecipeListEvents.OnSelectCategory -> {
                 onSelectCategory(event.category)
             }
+            RecipeListEvents.OnRemoveHeadMessageFromQueue -> {
+                removeHeadMessage()
+            }
             else -> {
-                handleError("Dummy error")
+                appendToMessageQueue(
+                    GenericMessageInfo.Builder()
+                        .id(UUID.randomUUID().toString())
+                        .title("Error")
+                        .uiComponentType(UIComponentType.Dialog)
+                        .description("Dummy error")
+                )
             }
         }
     }
@@ -79,7 +118,7 @@ class RecipeListViewModel @Inject constructor(
             }
 
             dataState.message?.let { message ->
-                handleError(message)
+                appendToMessageQueue(message)
             }
 
         }.launchIn(viewModelScope)
@@ -91,9 +130,24 @@ class RecipeListViewModel @Inject constructor(
         state.value = state.value.copy(recipes=curr)
     }
 
-    private fun handleError(errorMessage: String) {
-        val queue = state.value.queue
-        queue.add(errorMessage)
-        state.value = state.value.copy(queue = queue)
+    private fun appendToMessageQueue(msgInfo: GenericMessageInfo.Builder) {
+        if (!GenericMessageInfoQueueUtil().doesMessageAlreadyExistInQueue(
+                queue = state.value.queue, messageInfo = msgInfo.build()
+        )) {
+            val queue = state.value.queue
+            queue.add(msgInfo.build())
+            state.value = state.value.copy(queue = queue)
+        }
+    }
+
+    private fun removeHeadMessage() {
+        try {
+            val queue = state.value.queue
+            queue.remove()
+            state.value = state.value.copy(queue = Queue(mutableListOf())) //force recompose -> tricky xd
+            state.value = state.value.copy(queue = queue)
+        } catch (e: Exception) {
+            // nothing to remove
+        }
     }
 }
