@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
         google()
+        jcenter()
         gradlePluginPortal()
         mavenCentral()
     }
@@ -9,3 +10,5 @@ pluginManagement {
 rootProject.name = "PreappKMM"
 include(":androidPreeappKMM")
 include(":shared")
+
+//enableFeaturePreview("GRADLE_METADATA")

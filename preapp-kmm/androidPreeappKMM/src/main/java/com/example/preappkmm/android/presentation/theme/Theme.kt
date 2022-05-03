@@ -49,7 +49,7 @@ fun AppTheme(
         ){
             ProcessDialogQueue(dialogQueue=dialogQueue, onRemoveHeadMessageFromQueue=onRemoveHeadMessageFromQueue)
             content()
-            CircularLoading(isDisplayed = displayProgressBar, verticalBias = 0.3f)
+            CircularLoading(isDisplayed = displayProgressBar)
         }
     }
 }

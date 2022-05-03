@@ -18,7 +18,7 @@ import com.example.preappkmm.android.presentation.theme.Main300
  * I just left it here as an example.
  */
 @Composable
-fun CircularLoading(isDisplayed: Boolean, verticalBias: Float) {
+fun CircularLoading(isDisplayed: Boolean) {
     if (isDisplayed) {
         Box(Modifier.fillMaxSize()) {
             CircularProgressIndicator(
