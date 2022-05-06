@@ -1,13 +1,16 @@
 package com.example.kmm_network.android.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.kmm_network.android.presentation.user_detail.UserDetailScreen
+import com.example.kmm_network.android.presentation.user_detail.UserDetailViewModel
 import com.example.kmm_network.android.presentation.user_list.UserListScreen
+import com.example.kmm_network.android.presentation.user_list.UserListViewModel
 
 @Composable
 fun Navigation() {
@@ -17,6 +20,8 @@ fun Navigation() {
         startDestination = Screen.UserList.route
     ) {
         composable(route = Screen.UserList.route) { navBackStackEntry ->
+
+            val viewModel = hiltViewModel<UserListViewModel>()
 
             UserListScreen(
                 onSelectedUser = { userId ->
@@ -31,7 +36,11 @@ fun Navigation() {
                 type = NavType.IntType
             })
         ) { navBackStackEntry ->
-            UserDetailScreen(userId = navBackStackEntry.arguments?.getInt("userId"))
+            // thanks to this hilt maintain for instance cases, when we open two same screen, it keeps the history of them perfectly
+            // (hilt gets navBackStackEntry under the hood, so we can use all arguments in our viewModel)
+            // https://developer.android.com/jetpack/compose/libraries#hilt
+            val viewModel = hiltViewModel<UserDetailViewModel>()
+            UserDetailScreen(userId = viewModel.userId.value)
         }
     }
 }

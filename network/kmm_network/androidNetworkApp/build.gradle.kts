@@ -5,6 +5,7 @@ plugins {
     // but for now KSP does not support Hilt, so we stay with kapt
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
+    id("dagger.hilt.android.plugin")
 }
 
 val composeVersion = "1.1.1"
@@ -68,9 +69,21 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
     // mb i need also compiler jetpack compose lib, we will see ...
 
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+    // Hilt navigation
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 
     // for detecting memory leak
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
 
+}
+
+// Allow references to generated code - required by Hilt
+kapt {
+    correctErrorTypes = true
 }

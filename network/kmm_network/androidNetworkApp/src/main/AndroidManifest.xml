@@ -3,6 +3,7 @@
     package="com.example.kmm_network.android">
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
