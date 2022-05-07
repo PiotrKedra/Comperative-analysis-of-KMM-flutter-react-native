@@ -76,6 +76,8 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
+    implementation("io.ktor:ktor-client-android:2.0.1")
+
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 
     // for detecting memory leak
