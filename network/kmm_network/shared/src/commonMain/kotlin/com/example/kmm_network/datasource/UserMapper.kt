@@ -16,3 +16,13 @@ fun UserDto.toUser(): User {
 fun List<UserDto>.toUserList(): List<User> {
     return map{it.toUser()}
 }
+
+fun User.toUserDto(): UserDto {
+    return UserDto(
+        id = id,
+        email = email,
+        firstName = firstName,
+        lastName = lastName,
+        avatar = avatar
+    )
+}

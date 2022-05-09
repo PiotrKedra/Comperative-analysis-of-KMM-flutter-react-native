@@ -40,7 +40,7 @@ fun Navigation() {
             // (hilt gets navBackStackEntry under the hood, so we can use all arguments in our viewModel)
             // https://developer.android.com/jetpack/compose/libraries#hilt
             val viewModel = hiltViewModel<UserDetailViewModel>()
-            UserDetailScreen(userId = viewModel.userId.value)
+            UserDetailScreen(user = viewModel.user.value)
         }
     }
 }

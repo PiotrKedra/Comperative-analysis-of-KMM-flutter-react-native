@@ -11,4 +11,16 @@ interface UserService {
     suspend fun get(
         id: Int
     ) : User
+
+    suspend fun create(
+        user: User
+    ) : User
+
+    suspend fun update(
+        user: User
+    ) : User
+
+    suspend fun delete(
+        userId: Int,
+    ) : Unit
 }

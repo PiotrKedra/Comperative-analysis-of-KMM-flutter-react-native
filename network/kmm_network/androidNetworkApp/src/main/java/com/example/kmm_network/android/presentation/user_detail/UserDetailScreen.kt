@@ -2,14 +2,15 @@ package com.example.kmm_network.android.presentation.user_detail
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import com.example.kmm_network.domain.model.User
 
 @Composable
 fun UserDetailScreen(
-    userId: Int?,
+    user: User?,
 ) {
-    if (userId == null) {
+    if (user == null) {
         Text("Error (no id)")
     } else {
-        Text("User id: $userId")
+        Text("User email: ${user.email}")
     }
 }
