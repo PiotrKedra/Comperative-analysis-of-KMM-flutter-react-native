@@ -1,0 +1,27 @@
+CREATE TABLE userEntity (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  email TEXT,
+  first_name TEXT,
+  last_name TEXT,
+  avatar TEXT
+);
+
+selectAll:
+SELECT * FROM userEntity;
+
+insertUser:
+INSERT OR REPLACE
+INTO userEntity (
+    id,
+    email,
+    first_name,
+    last_name,
+    avatar
+) VALUES (?, ?, ?, ?, ?);
+
+getAllUsers:
+SELECT * FROM userEntity
+LIMIT :pageSize
+OFFSET :offset;
+
+

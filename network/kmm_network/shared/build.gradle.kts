@@ -3,6 +3,7 @@ plugins {
     kotlin("native.cocoapods")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
     id("com.android.library")
+    id("com.squareup.sqldelight")
 }
 
 version = "1.0"
@@ -32,11 +33,13 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("com.squareup.sqldelight:runtime:1.5.3")
             }
         }
         val androidMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("com.squareup.sqldelight:android-driver:1.5.3")
             }
         }
         val iosX64Main by getting
@@ -49,6 +52,7 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+                implementation("com.squareup.sqldelight:native-driver:1.5.3")
             }
         }
     }
@@ -60,5 +64,12 @@ android {
     defaultConfig {
         minSdk = 21
         targetSdk = 32
+    }
+}
+
+sqldelight {
+    database("UserDatabase") {
+        packageName = "com.example.kmm_network.datasource.cache"
+        sourceFolders = listOf("sqldelight")
     }
 }
