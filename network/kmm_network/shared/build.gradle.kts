@@ -33,7 +33,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-//                implementation("com.squareup.sqldelight:runtime:1.5.3")
+                implementation("com.squareup.sqldelight:runtime:1.5.3")
             }
         }
         val androidMain by getting {

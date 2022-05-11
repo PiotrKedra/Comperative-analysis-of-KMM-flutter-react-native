@@ -1,5 +1,6 @@
 package com.example.kmm_network.android.di
 
+import com.example.kmm_network.datasource.cache.UserCache
 import com.example.kmm_network.datasource.network.UserService
 import com.example.kmm_network.interactors.*
 import dagger.Module
@@ -14,31 +15,31 @@ object InteractorsModule {
 
     @Singleton
     @Provides
-    fun provideGetUserList(userService: UserService): GetUserList {
-        return GetUserList(userService = userService)
+    fun provideGetUserList(userService: UserService, userCache: UserCache): GetUserList {
+        return GetUserList(userService = userService, userCache = userCache)
     }
 
     @Singleton
     @Provides
-    fun provideGetUser(userService: UserService): GetUser {
-        return GetUser(userService = userService)
+    fun provideGetUser(userCache: UserCache): GetUser {
+        return GetUser(userCache = userCache)
     }
 
     @Singleton
     @Provides
-    fun provideCreateUser(userService: UserService): CreateUser {
-        return CreateUser(userService = userService)
+    fun provideCreateUser(userService: UserService, userCache: UserCache): CreateUser {
+        return CreateUser(userService = userService, userCache = userCache)
     }
 
     @Singleton
     @Provides
-    fun provideUpdateUser(userService: UserService): UpdateUser {
-        return UpdateUser(userService = userService)
+    fun provideUpdateUser(userService: UserService, userCache: UserCache): UpdateUser {
+        return UpdateUser(userService = userService, userCache = userCache)
     }
 
     @Singleton
     @Provides
-    fun provideDeleteUser(userService: UserService): DeleteUser {
-        return DeleteUser(userService = userService)
+    fun provideDeleteUser(userService: UserService, userCache: UserCache): DeleteUser {
+        return DeleteUser(userService = userService, userCache = userCache)
     }
 }

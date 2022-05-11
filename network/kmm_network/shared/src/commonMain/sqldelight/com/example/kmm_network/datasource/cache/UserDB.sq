@@ -24,4 +24,17 @@ SELECT * FROM userEntity
 LIMIT :pageSize
 OFFSET :offset;
 
+getUserById:
+SELECT * FROM userEntity
+WHERE id = :id;
+
+updateUser:
+UPDATE userEntity
+SET email=:email, first_name=:firstName, last_name=:lastName, avatar=:avatar
+WHERE id = :id;
+
+deleteUser:
+DELETE FROM userEntity WHERE id = :id;
+
+
 
