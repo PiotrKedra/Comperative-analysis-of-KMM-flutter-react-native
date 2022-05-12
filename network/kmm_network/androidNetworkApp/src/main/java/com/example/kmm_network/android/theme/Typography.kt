@@ -23,7 +23,7 @@ val JetBrainsMonoTypography = Typography(
     h3 = TextStyle(
         fontFamily = JetBrainsMono,
         fontWeight = FontWeight.W600,
-        fontSize = 16.sp
+        fontSize = 22.sp
     ),
     h4 = TextStyle(
         fontFamily = JetBrainsMono,
@@ -33,7 +33,8 @@ val JetBrainsMonoTypography = Typography(
     h5 = TextStyle(
         fontFamily = JetBrainsMono,
         fontWeight = FontWeight.W400,
-        fontSize = 12.sp
+        fontSize = 12.sp,
+        color = Gray
     ),
     body1 = TextStyle(
         fontFamily = JetBrainsMono,
@@ -43,7 +44,7 @@ val JetBrainsMonoTypography = Typography(
     body2 = TextStyle(
         fontFamily = JetBrainsMono,
         fontWeight = FontWeight.W500,
-        fontSize = 10.sp
+        fontSize = 12.sp
     ),
     button = TextStyle(
         fontFamily = JetBrainsMono,

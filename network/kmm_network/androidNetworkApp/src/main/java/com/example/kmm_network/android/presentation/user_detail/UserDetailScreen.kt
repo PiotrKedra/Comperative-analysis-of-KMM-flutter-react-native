@@ -2,6 +2,8 @@ package com.example.kmm_network.android.presentation.user_detail
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import com.example.kmm_network.android.presentation.components.UserSmallImage
+import com.example.kmm_network.android.presentation.user_list.UserCard
 import com.example.kmm_network.android.theme.AppTheme
 import com.example.kmm_network.domain.model.User
 
@@ -13,7 +15,7 @@ fun UserDetailScreen(
         if (user == null) {
             Text("Error (no id)")
         } else {
-            Text("User email: ${user.email}")
+            UserCard(user = user, onClick = {})
         }
     }
 }
