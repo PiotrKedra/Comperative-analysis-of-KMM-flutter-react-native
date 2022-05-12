@@ -4,6 +4,7 @@ import com.example.kmm_network.datasource.cache.UserCache
 import com.example.kmm_network.datasource.network.UserService
 import com.example.kmm_network.domain.DataState
 import com.example.kmm_network.domain.model.User
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -18,6 +19,8 @@ class GetUserList(
 
         try {
             val users = userService.getUsers(page)
+
+            delay(500)
 
             userCache.insert(users)
 

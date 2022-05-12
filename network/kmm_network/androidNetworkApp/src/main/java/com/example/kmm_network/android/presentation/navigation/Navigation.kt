@@ -24,6 +24,7 @@ fun Navigation() {
             val viewModel = hiltViewModel<UserListViewModel>()
 
             UserListScreen(
+                state = viewModel.state.value,
                 onSelectedUser = { userId ->
                     navController.navigate(Screen.UserDetail.route + "/$userId")
                 }

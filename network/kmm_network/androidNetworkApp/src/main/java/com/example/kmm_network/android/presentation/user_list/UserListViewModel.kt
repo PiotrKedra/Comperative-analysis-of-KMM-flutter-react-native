@@ -1,8 +1,11 @@
 package com.example.kmm_network.android.presentation.user_list
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kmm_network.presentation.user_list.UserListState
 import com.example.kmm_network.domain.model.User
 import com.example.kmm_network.interactors.CreateUser
 import com.example.kmm_network.interactors.GetUserList
@@ -18,19 +21,23 @@ class UserListViewModel @Inject constructor(
     private val createUser: CreateUser,
 ) : ViewModel() {
 
+    val state: MutableState<UserListState> = mutableStateOf(UserListState())
+
     init {
         loadUsers()
     }
 
     private fun loadUsers() {
         getUserList.execute(
-            page = 1
+            page = state.value.page
         ).onEach { dataState ->
-            println("XD")
-            println(dataState.isLoading)
+
+            println("XDXD1 ${dataState.isLoading}")
+
+            state.value = state.value.copy(isLoading = dataState.isLoading)
 
             dataState.data?.let { users ->
-                println(users)
+                appendUser(users = users)
             }
 
             dataState.message?.let { message ->
@@ -52,6 +59,12 @@ class UserListViewModel @Inject constructor(
                 println(message)
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun appendUser(users: List<User>) {
+        val curr = ArrayList(state.value.users)
+        curr.addAll(users)
+        state.value = state.value.copy(users = curr)
     }
 
 }

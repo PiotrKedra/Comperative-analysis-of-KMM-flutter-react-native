@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.kmm_network.android.presentation.components.CircularLoading
 
 private val LightThemeColors = lightColors(
     primary = Primary,
@@ -33,9 +34,7 @@ fun AppTheme(
                 .background(color = White)
         ) {
             content()
-            if (displayProgressBar) {
-                // TODO
-            }
+            CircularLoading(isDisplayed = displayProgressBar)
         }
     }
 }

@@ -1,36 +1,27 @@
 package com.example.kmm_network.android.presentation.user_list
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.example.kmm_network.android.presentation.user_list.components.UserList
 import com.example.kmm_network.android.theme.AppTheme
+import com.example.kmm_network.presentation.user_list.UserListState
 
 @Composable
 fun UserListScreen(
+    state: UserListState,
     onSelectedUser: (Int) -> Unit,
 ) {
-    AppTheme(displayProgressBar = false) {
-        LazyColumn {
-            items(100) { userId ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onSelectedUser(userId)
-                        }
-                ) {
-                    Text(
-                        modifier = Modifier.padding(16.dp),
-                        text = "User id: $userId"
-                    )
-                }
-            }
+    AppTheme(displayProgressBar = state.isLoading) {
+        Column (
+            modifier = Modifier.fillMaxSize()
+        ) {
+            UserList(
+                isLoading = state.isLoading,
+                users = state.users,
+                onSelectedUser = onSelectedUser
+            )
         }
+
     }
 }

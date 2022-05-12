@@ -18,7 +18,7 @@ val JetBrainsMonoTypography = Typography(
     h1 = TextStyle(
         fontFamily = JetBrainsMono,
         fontWeight = FontWeight.W600,
-        fontSize = 30.sp
+        fontSize = 36.sp
     ),
     h3 = TextStyle(
         fontFamily = JetBrainsMono,
