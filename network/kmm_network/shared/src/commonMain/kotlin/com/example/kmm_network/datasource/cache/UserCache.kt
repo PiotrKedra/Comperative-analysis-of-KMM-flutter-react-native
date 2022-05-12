@@ -7,7 +7,6 @@ interface UserCache {
 
     fun insert(userList: List<User>)
 
-    @Throws(NullPointerException::class)
     fun get(id: Int): User?
 
     fun getAll(page: Int) : List<User>
