@@ -48,7 +48,7 @@ class UserServiceImpl(
 
     companion object {
         const val BASE_URL = "https://reqres.in/api/"
-        const val PAGINATION_PAGE_SIZE = 30
+        const val PAGINATION_PAGE_SIZE = 6
     }
 }
 

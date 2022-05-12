@@ -1,6 +1,7 @@
 package com.example.kmm_network.android.theme
 
 import androidx.compose.material.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -28,7 +29,8 @@ val JetBrainsMonoTypography = Typography(
     h4 = TextStyle(
         fontFamily = JetBrainsMono,
         fontWeight = FontWeight.W400,
-        fontSize = 20.sp
+        fontSize = 22.sp,
+        color = Gray
     ),
     h5 = TextStyle(
         fontFamily = JetBrainsMono,
@@ -39,7 +41,7 @@ val JetBrainsMonoTypography = Typography(
     body1 = TextStyle(
         fontFamily = JetBrainsMono,
         fontWeight = FontWeight.W500,
-        fontSize = 20.sp
+        fontSize = 24.sp
     ),
     body2 = TextStyle(
         fontFamily = JetBrainsMono,
@@ -49,6 +51,7 @@ val JetBrainsMonoTypography = Typography(
     button = TextStyle(
         fontFamily = JetBrainsMono,
         fontWeight = FontWeight.W500,
-        fontSize = 20.sp
+        fontSize = 22.sp,
+        color = White
     ),
 )

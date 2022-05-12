@@ -9,6 +9,7 @@ import com.example.kmm_network.presentation.user_list.UserListState
 import com.example.kmm_network.domain.model.User
 import com.example.kmm_network.interactors.CreateUser
 import com.example.kmm_network.interactors.GetUserList
+import com.example.kmm_network.presentation.user_list.UserListEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -24,15 +25,27 @@ class UserListViewModel @Inject constructor(
     val state: MutableState<UserListState> = mutableStateOf(UserListState())
 
     init {
-        loadUsers()
+        onTriggerEvent(UserListEvents.LoadUsers)
+    }
+
+    fun onTriggerEvent(event: UserListEvents) {
+        when (event) {
+            UserListEvents.LoadUsers -> {
+                loadUsers()
+            }
+            UserListEvents.NextPage -> {
+                nextPage()
+            }
+            else -> {
+                println("### some event")
+            }
+        }
     }
 
     private fun loadUsers() {
         getUserList.execute(
             page = state.value.page
         ).onEach { dataState ->
-
-            println("XDXD1 ${dataState.isLoading}")
 
             state.value = state.value.copy(isLoading = dataState.isLoading)
 
@@ -44,6 +57,11 @@ class UserListViewModel @Inject constructor(
                 println(message)
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun nextPage() {
+        state.value = state.value.copy(page = state.value.page + 1)
+        loadUsers()
     }
 
     private fun createUser(user: User) {

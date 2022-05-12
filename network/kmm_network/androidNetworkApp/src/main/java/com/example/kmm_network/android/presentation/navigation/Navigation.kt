@@ -25,6 +25,7 @@ fun Navigation() {
 
             UserListScreen(
                 state = viewModel.state.value,
+                onTriggerEvent = viewModel::onTriggerEvent,
                 onSelectedUser = { userId ->
                     navController.navigate(Screen.UserDetail.route + "/$userId")
                 }

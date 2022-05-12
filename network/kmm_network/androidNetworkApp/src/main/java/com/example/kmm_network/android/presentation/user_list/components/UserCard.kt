@@ -8,7 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.kmm_network.android.presentation.components.UserSmallImage
+import com.example.kmm_network.android.presentation.components.UserImage
 import com.example.kmm_network.domain.model.User
 
 const val LOREM_IPSUM = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
@@ -26,7 +26,7 @@ fun UserCard(
         elevation = 0.dp
     ) {
         Row {
-            UserSmallImage(url = user.avatar, contentDescription = user.email)
+            UserImage(url = user.avatar, contentDescription = user.email)
             Column(
                 modifier = Modifier
                     .padding(start = 10.dp, top = 10.dp),

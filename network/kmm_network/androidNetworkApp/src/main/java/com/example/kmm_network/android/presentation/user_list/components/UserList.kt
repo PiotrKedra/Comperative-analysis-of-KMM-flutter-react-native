@@ -10,12 +10,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.kmm_network.android.presentation.components.MainTitleText
 import com.example.kmm_network.android.presentation.user_list.UserCard
+import com.example.kmm_network.datasource.network.UserServiceImpl.Companion.PAGINATION_PAGE_SIZE
 import com.example.kmm_network.domain.model.User
 
 @Composable
 fun UserList(
     isLoading: Boolean,
     users: List<User>,
+    page: Int,
+    onTriggerNextPage: () -> Unit,
     onSelectedUser: (Int) -> Unit,
 ) {
     LazyColumn {
@@ -32,6 +35,11 @@ fun UserList(
             itemsIndexed(
                 items = users
             ) { index, user ->
+
+                if ((index + 1) >= (page * PAGINATION_PAGE_SIZE) && !isLoading) {
+                    onTriggerNextPage()
+                }
+
                 UserCard(user = user, onClick = {onSelectedUser(user.id)})
 
                 if (index < users.lastIndex)

@@ -14,24 +14,26 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 
 const val SMALL_IMG_SIZE = 130
+const val LARGE_IMG_SIZE = 260
 
 @Composable
-fun UserSmallImage(
+fun UserImage(
     url: String,
     contentDescription: String,
+    imgSize: Int = SMALL_IMG_SIZE
 ) {
     SubcomposeAsyncImage(
         model = url,
         contentDescription = contentDescription,
         modifier = Modifier
-            .width(SMALL_IMG_SIZE.dp)
-            .height(SMALL_IMG_SIZE.dp)
+            .width(imgSize.dp)
+            .height(imgSize.dp)
             .clip(MaterialTheme.shapes.large),
         contentScale = ContentScale.Crop,
         loading = {
             Box(modifier = Modifier
-                .width(SMALL_IMG_SIZE.dp)
-                .height(SMALL_IMG_SIZE.dp)
+                .width(imgSize.dp)
+                .height(imgSize.dp)
                 .clip(MaterialTheme.shapes.large)
                 .background(Color.LightGray)
             ) {
