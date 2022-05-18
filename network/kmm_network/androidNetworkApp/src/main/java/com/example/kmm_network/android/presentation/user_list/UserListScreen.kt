@@ -17,6 +17,7 @@ fun UserListScreen(
     state: UserListState,
     onTriggerEvent: (UserListEvents) -> Unit,
     onSelectedUser: (Int) -> Unit,
+    onClickAddNewUser: () -> Unit
 ) {
     AppTheme(displayProgressBar = state.isLoading) {
         Box (
@@ -38,7 +39,7 @@ fun UserListScreen(
                     .padding(bottom = 20.dp, end = 20.dp)
                     .align(Alignment.BottomEnd),
             ) {
-                MainButton(text = "add", onClick = {}, horizontalPadding = 16)
+                MainButton(text = "add", onClick = {onClickAddNewUser()}, horizontalPadding = 16)
             }
         }
 

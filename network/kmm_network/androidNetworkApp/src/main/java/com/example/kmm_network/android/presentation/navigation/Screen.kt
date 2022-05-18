@@ -5,4 +5,5 @@ sealed class Screen(
 ) {
     object UserList: Screen("userScreen")
     object UserDetail: Screen("userDetailsScreen")
+    object CreateUser: Screen("createUserScreen")
 }

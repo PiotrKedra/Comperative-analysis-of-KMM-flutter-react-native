@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.kmm_network.android.presentation.create_user.CreateUserScreen
 import com.example.kmm_network.android.presentation.user_detail.UserDetailScreen
 import com.example.kmm_network.android.presentation.user_detail.UserDetailViewModel
 import com.example.kmm_network.android.presentation.user_list.UserListScreen
@@ -28,6 +29,9 @@ fun Navigation() {
                 onTriggerEvent = viewModel::onTriggerEvent,
                 onSelectedUser = { userId ->
                     navController.navigate(Screen.UserDetail.route + "/$userId")
+                },
+                onClickAddNewUser = {
+                    navController.navigate(Screen.CreateUser.route)
                 }
             )
         }
@@ -43,6 +47,12 @@ fun Navigation() {
             // https://developer.android.com/jetpack/compose/libraries#hilt
             val viewModel = hiltViewModel<UserDetailViewModel>()
             UserDetailScreen(user = viewModel.user.value)
+        }
+
+        composable(
+            route = Screen.CreateUser.route
+        ) {
+            CreateUserScreen()
         }
     }
 }
