@@ -33,7 +33,6 @@ class UserDetailViewModel @Inject constructor(
 
     private fun getUser(userId: Int) {
         getUser.execute(userId).onEach { dataState ->
-            println("XD details")
             println(dataState.isLoading)
 
             dataState.data?.let { user ->
@@ -47,7 +46,7 @@ class UserDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun updateUser(user: User) {
+    fun updateUser(user: User) {
         updateUser.execute(user).onEach { dataState ->
             println("Dupa: updating user")
             println(dataState.isLoading)
@@ -63,7 +62,7 @@ class UserDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun deleteUser(id: Int) {
+    fun deleteUser(id: Int) {
         deleteUser.execute(id).onEach { dataState ->
             println("Dupa: deleting user")
             println(dataState.isLoading)

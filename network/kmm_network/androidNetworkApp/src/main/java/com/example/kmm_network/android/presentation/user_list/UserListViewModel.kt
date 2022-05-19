@@ -47,7 +47,7 @@ class UserListViewModel @Inject constructor(
     private fun refresh() {
         state.value = state.value.copy(page = 1)
 
-        getUserList.execute(
+        getUserList.executeJustCache(
             page = state.value.page
         ).onEach { dataState ->
 

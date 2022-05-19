@@ -29,4 +29,14 @@ class GetUserList(
             emit(DataState.error(message = e.message ?: "Unknown error"))
         }
     }
+
+    fun executeJustCache(page: Int) : Flow<DataState<List<User>>> = flow {
+        emit(DataState.loading())
+        try {
+            delay(500)
+            emit(DataState.success(data = userCache.getAll(page)))
+        } catch (e: Exception) {
+            emit(DataState.error(message = e.message ?: "Unknown error"))
+        }
+    }
 }

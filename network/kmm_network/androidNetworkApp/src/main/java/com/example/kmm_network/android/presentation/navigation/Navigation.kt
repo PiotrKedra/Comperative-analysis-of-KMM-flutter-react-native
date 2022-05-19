@@ -52,12 +52,22 @@ fun Navigation() {
             arguments = listOf(navArgument("userId") {
                 type = NavType.IntType
             })
-        ) { navBackStackEntry ->
+        ) {
             // thanks to this hilt maintain for instance cases, when we open two same screen, it keeps the history of them perfectly
             // (hilt gets navBackStackEntry under the hood, so we can use all arguments in our viewModel)
             // https://developer.android.com/jetpack/compose/libraries#hilt
             val viewModel = hiltViewModel<UserDetailViewModel>()
-            UserDetailScreen(user = viewModel.user.value)
+            UserDetailScreen(
+                user = viewModel.user.value,
+                updateUser = { user ->
+                    viewModel.updateUser(user)
+                },
+                deleteUser = { userId ->
+                    viewModel.deleteUser(userId)
+                    shouldRefresh = true
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable(

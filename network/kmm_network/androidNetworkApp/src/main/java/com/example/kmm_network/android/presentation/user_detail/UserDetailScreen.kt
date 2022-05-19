@@ -10,12 +10,18 @@ import com.example.kmm_network.domain.model.User
 @Composable
 fun UserDetailScreen(
     user: User?,
+    updateUser: (User) -> Unit,
+    deleteUser: (Int) -> Unit
 ) {
     AppTheme(displayProgressBar = false) {
         if (user == null) {
             Text("Error (no id)")
         } else {
-            UserDetails(user = user)
+            UserDetails(
+                user = user,
+                updateUser = updateUser,
+                deleteUser = deleteUser
+            )
         }
     }
 }
