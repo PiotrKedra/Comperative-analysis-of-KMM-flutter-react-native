@@ -2,6 +2,7 @@ package com.example.kmm_network.datasource.network
 
 import com.example.kmm_network.datasource.network.model.SingleUserDto
 import com.example.kmm_network.datasource.network.model.UserListDto
+import com.example.kmm_network.datasource.toCreateUserDto
 import com.example.kmm_network.datasource.toUser
 import com.example.kmm_network.datasource.toUserDto
 import com.example.kmm_network.datasource.toUserList
@@ -26,11 +27,11 @@ class UserServiceImpl(
     }
 
     override suspend fun create(user: User): User {
-        val userDto = user.toUserDto()
-        val singleUserDto: SingleUserDto = client.post("${baseUrl}users") {
-            setBody(userDto)
-        }.body()
-        return singleUserDto.userDto.toUser()
+        val userDto = user.toCreateUserDto()
+        val response = client.post("${baseUrl}users") {
+//            setBody(userDto)
+        }
+        return user;
     }
 
     override suspend fun update(user: User): User {

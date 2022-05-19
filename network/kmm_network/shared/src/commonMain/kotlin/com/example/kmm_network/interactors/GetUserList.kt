@@ -24,7 +24,7 @@ class GetUserList(
 
             userCache.insert(users)
 
-            emit(DataState.success(data = users))
+            emit(DataState.success(data = userCache.getAll(page)))
         } catch (e: Exception) {
             emit(DataState.error(message = e.message ?: "Unknown error"))
         }

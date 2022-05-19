@@ -1,6 +1,7 @@
 package com.example.kmm_network.android.presentation.navigation
 
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -8,24 +9,34 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.kmm_network.android.presentation.create_user.CreateUserScreen
+import com.example.kmm_network.android.presentation.create_user.CreateUserViewModel
 import com.example.kmm_network.android.presentation.user_detail.UserDetailScreen
 import com.example.kmm_network.android.presentation.user_detail.UserDetailViewModel
 import com.example.kmm_network.android.presentation.user_list.UserListScreen
 import com.example.kmm_network.android.presentation.user_list.UserListViewModel
+import com.example.kmm_network.presentation.user_list.UserListEvents
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
+
+    var shouldRefresh:Boolean by remember { mutableStateOf(false) }
+
     NavHost(
         navController = navController,
         startDestination = Screen.UserList.route
     ) {
+
         composable(route = Screen.UserList.route) { navBackStackEntry ->
 
             val viewModel = hiltViewModel<UserListViewModel>()
-
             UserListScreen(
                 state = viewModel.state.value,
+                shouldRefresh = shouldRefresh,
+                refresh = {
+                    shouldRefresh = false
+                    viewModel.onTriggerEvent(UserListEvents.Refresh)
+                },
                 onTriggerEvent = viewModel::onTriggerEvent,
                 onSelectedUser = { userId ->
                     navController.navigate(Screen.UserDetail.route + "/$userId")
@@ -52,7 +63,15 @@ fun Navigation() {
         composable(
             route = Screen.CreateUser.route
         ) {
-            CreateUserScreen()
+            val viewModel = hiltViewModel<CreateUserViewModel>()
+            CreateUserScreen(
+                state = viewModel.state.value,
+                createUser = { viewModel.createUser(it) },
+                goBack = {
+                    navController.popBackStack()
+                    shouldRefresh=true
+                }
+            )
         }
     }
 }

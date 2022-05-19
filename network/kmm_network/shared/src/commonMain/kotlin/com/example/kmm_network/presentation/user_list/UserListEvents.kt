@@ -5,4 +5,5 @@ sealed class UserListEvents {
     object LoadUsers: UserListEvents()
 
     object NextPage: UserListEvents()
+    object Refresh: UserListEvents()
 }

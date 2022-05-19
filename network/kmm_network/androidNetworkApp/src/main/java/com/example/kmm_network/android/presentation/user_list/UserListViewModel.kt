@@ -19,7 +19,6 @@ import javax.inject.Inject
 class UserListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle, // we don't need it here, but hilt requires it?
     private val getUserList: GetUserList,
-    private val createUser: CreateUser,
 ) : ViewModel() {
 
     val state: MutableState<UserListState> = mutableStateOf(UserListState())
@@ -36,10 +35,32 @@ class UserListViewModel @Inject constructor(
             UserListEvents.NextPage -> {
                 nextPage()
             }
+            UserListEvents.Refresh -> {
+                refresh()
+            }
             else -> {
                 println("### some event")
             }
         }
+    }
+
+    private fun refresh() {
+        state.value = state.value.copy(page = 1)
+
+        getUserList.execute(
+            page = state.value.page
+        ).onEach { dataState ->
+
+            state.value = state.value.copy(isLoading = dataState.isLoading)
+
+            dataState.data?.let { users ->
+                state.value = state.value.copy(users = users)
+            }
+
+            dataState.message?.let { message ->
+                println(message)
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun loadUsers() {
@@ -62,21 +83,6 @@ class UserListViewModel @Inject constructor(
     private fun nextPage() {
         state.value = state.value.copy(page = state.value.page + 1)
         loadUsers()
-    }
-
-    private fun createUser(user: User) {
-        createUser.execute(user).onEach { dataState ->
-            println("dupa: creating user")
-            println(dataState.isLoading)
-
-            dataState.data?.let { users ->
-                println(users)
-            }
-
-            dataState.message?.let { message ->
-                println(message)
-            }
-        }.launchIn(viewModelScope)
     }
 
     private fun appendUser(users: List<User>) {

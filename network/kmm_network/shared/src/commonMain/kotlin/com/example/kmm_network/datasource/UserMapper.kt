@@ -1,5 +1,6 @@
 package com.example.kmm_network.datasource
 
+import com.example.kmm_network.datasource.network.model.CreateUserDto
 import com.example.kmm_network.datasource.network.model.UserDto
 import com.example.kmm_network.domain.model.User
 import com.example.kmmnetwork.datasource.cache.UserEntity
@@ -25,6 +26,13 @@ fun User.toUserDto(): UserDto {
         firstName = firstName,
         lastName = lastName,
         avatar = avatar
+    )
+}
+
+fun User.toCreateUserDto(): CreateUserDto {
+    return CreateUserDto(
+        name = firstName,
+        job = lastName,
     )
 }
 
