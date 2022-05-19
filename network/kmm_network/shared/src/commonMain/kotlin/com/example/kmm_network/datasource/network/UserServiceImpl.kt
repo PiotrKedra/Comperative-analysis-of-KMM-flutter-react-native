@@ -36,10 +36,10 @@ class UserServiceImpl(
 
     override suspend fun update(user: User): User {
         val userDto = user.toUserDto()
-        val singleUserDto: SingleUserDto = client.put("${baseUrl}users/${user.id}") {
-            setBody(userDto)
-        }.body()
-        return singleUserDto.userDto.toUser()
+        val response = client.put("${baseUrl}users/${user.id}") {
+//            setBody(userDto)
+        }
+        return user
     }
 
     override suspend fun delete(userId: Int) {

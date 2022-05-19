@@ -18,7 +18,7 @@ class UpdateUser(
 
         try {
             val updatedUser = userService.update(user)
-            userCache.update(user)
+            userCache.update(updatedUser)
             emit(DataState.success(data = updatedUser))
         } catch (e: Exception) {
             emit(DataState.error(message = e.message ?: "Unknown error"))

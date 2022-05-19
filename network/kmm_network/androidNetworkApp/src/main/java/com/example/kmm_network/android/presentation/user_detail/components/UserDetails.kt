@@ -14,8 +14,8 @@ import com.example.kmm_network.domain.model.User
 @Composable
 fun UserDetails(
     user: User,
-    updateUser: (User) -> Unit,
     deleteUser: (Int) -> Unit,
+    onClickUpdateUser: (Int) -> Unit
 ) {
     Box (
         modifier = Modifier.fillMaxSize()
@@ -49,7 +49,7 @@ fun UserDetails(
         ) {
             SecondaryButton(text = "delete", onClick = {deleteUser(user.id)})
             Spacer(modifier = Modifier.padding(10.dp))
-            MainButton(text = "update", onClick = {})
+            MainButton(text = "update", onClick = {onClickUpdateUser(user.id)})
         }
     }
 }

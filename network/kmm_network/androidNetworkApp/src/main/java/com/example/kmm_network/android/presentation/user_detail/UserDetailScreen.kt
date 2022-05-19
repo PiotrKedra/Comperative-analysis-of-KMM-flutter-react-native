@@ -10,8 +10,8 @@ import com.example.kmm_network.domain.model.User
 @Composable
 fun UserDetailScreen(
     user: User?,
-    updateUser: (User) -> Unit,
-    deleteUser: (Int) -> Unit
+    deleteUser: (Int) -> Unit,
+    onClickUpdateUser: (Int) -> Unit
 ) {
     AppTheme(displayProgressBar = false) {
         if (user == null) {
@@ -19,8 +19,8 @@ fun UserDetailScreen(
         } else {
             UserDetails(
                 user = user,
-                updateUser = updateUser,
-                deleteUser = deleteUser
+                deleteUser = deleteUser,
+                onClickUpdateUser = onClickUpdateUser
             )
         }
     }

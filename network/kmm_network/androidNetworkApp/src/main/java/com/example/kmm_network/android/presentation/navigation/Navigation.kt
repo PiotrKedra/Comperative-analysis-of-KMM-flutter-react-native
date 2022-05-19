@@ -1,15 +1,14 @@
 package com.example.kmm_network.android.presentation.navigation
 
 import androidx.compose.runtime.*
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.kmm_network.android.presentation.create_user.CreateUserScreen
-import com.example.kmm_network.android.presentation.create_user.CreateUserViewModel
+import com.example.kmm_network.android.presentation.modify_user.ModifyUserScreen
+import com.example.kmm_network.android.presentation.modify_user.ModifyUserViewModel
 import com.example.kmm_network.android.presentation.user_detail.UserDetailScreen
 import com.example.kmm_network.android.presentation.user_detail.UserDetailViewModel
 import com.example.kmm_network.android.presentation.user_list.UserListScreen
@@ -27,7 +26,7 @@ fun Navigation() {
         startDestination = Screen.UserList.route
     ) {
 
-        composable(route = Screen.UserList.route) { navBackStackEntry ->
+        composable(route = Screen.UserList.route) {
 
             val viewModel = hiltViewModel<UserListViewModel>()
             UserListScreen(
@@ -59,13 +58,13 @@ fun Navigation() {
             val viewModel = hiltViewModel<UserDetailViewModel>()
             UserDetailScreen(
                 user = viewModel.user.value,
-                updateUser = { user ->
-                    viewModel.updateUser(user)
-                },
                 deleteUser = { userId ->
                     viewModel.deleteUser(userId)
                     shouldRefresh = true
                     navController.popBackStack()
+                },
+                onClickUpdateUser = { userId ->
+                    navController.navigate(Screen.UpdateUser.route + "/$userId")
                 }
             )
         }
@@ -73,14 +72,32 @@ fun Navigation() {
         composable(
             route = Screen.CreateUser.route
         ) {
-            val viewModel = hiltViewModel<CreateUserViewModel>()
-            CreateUserScreen(
+            val viewModel = hiltViewModel<ModifyUserViewModel>()
+            ModifyUserScreen(
                 state = viewModel.state.value,
-                createUser = { viewModel.createUser(it) },
+                modifyUser = { viewModel.createUser(it) },
                 goBack = {
                     navController.popBackStack()
                     shouldRefresh=true
                 }
+            )
+        }
+
+        composable(
+            route = Screen.UpdateUser.route + "/{userId}",
+            arguments = listOf(navArgument("userId") {
+                type = NavType.IntType
+            })
+        ) {
+            val viewModel = hiltViewModel<ModifyUserViewModel>()
+            ModifyUserScreen(
+                state = viewModel.state.value,
+                modifyUser = { viewModel.update(it) },
+                goBack = {
+                    navController.popBackStack(Screen.UserList.route, false)
+                    shouldRefresh=true
+                },
+                isCreate = false
             )
         }
     }
