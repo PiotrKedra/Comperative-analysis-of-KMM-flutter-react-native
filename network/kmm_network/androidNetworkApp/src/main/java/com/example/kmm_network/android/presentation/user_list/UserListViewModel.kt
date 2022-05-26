@@ -49,7 +49,7 @@ class UserListViewModel @Inject constructor(
 
         getUserList.executeJustCache(
             page = state.value.page
-        ).onEach { dataState ->
+        ).collectCommon(viewModelScope) { dataState ->
 
             state.value = state.value.copy(isLoading = dataState.isLoading)
 
@@ -60,13 +60,13 @@ class UserListViewModel @Inject constructor(
             dataState.message?.let { message ->
                 println(message)
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
     private fun loadUsers() {
         getUserList.execute(
             page = state.value.page
-        ).onEach { dataState ->
+        ).collectCommon(viewModelScope) { dataState ->
 
             state.value = state.value.copy(isLoading = dataState.isLoading)
 
@@ -77,7 +77,7 @@ class UserListViewModel @Inject constructor(
             dataState.message?.let { message ->
                 println(message)
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
     private fun nextPage() {

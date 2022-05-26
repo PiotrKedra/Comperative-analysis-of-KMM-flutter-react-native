@@ -4,7 +4,8 @@ import com.example.kmm_network.datasource.cache.UserCache
 import com.example.kmm_network.datasource.network.UserService
 import com.example.kmm_network.domain.DataState
 import com.example.kmm_network.domain.model.User
-import kotlinx.coroutines.flow.Flow
+import com.example.kmm_network.interactors.util.CommonFlow
+import com.example.kmm_network.interactors.util.asCommonFlow
 import kotlinx.coroutines.flow.flow
 
 class CreateUser(
@@ -12,7 +13,7 @@ class CreateUser(
     private val userCache: UserCache
 ) {
 
-    fun execute(user: User) : Flow<DataState<User>> = flow {
+    fun execute(user: User) : CommonFlow<DataState<User>> = flow {
 
         emit(DataState.loading())
 
@@ -23,5 +24,5 @@ class CreateUser(
         } catch (e: Exception) {
             emit(DataState.error(message = e.message ?: "Unknown error"))
         }
-    }
+    }.asCommonFlow()
 }

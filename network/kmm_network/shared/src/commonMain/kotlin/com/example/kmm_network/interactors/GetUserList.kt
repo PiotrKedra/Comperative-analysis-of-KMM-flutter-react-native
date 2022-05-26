@@ -4,6 +4,8 @@ import com.example.kmm_network.datasource.cache.UserCache
 import com.example.kmm_network.datasource.network.UserService
 import com.example.kmm_network.domain.DataState
 import com.example.kmm_network.domain.model.User
+import com.example.kmm_network.interactors.util.CommonFlow
+import com.example.kmm_network.interactors.util.asCommonFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,7 +15,7 @@ class GetUserList(
     private val userCache: UserCache
 ) {
 
-    fun execute(page: Int) : Flow<DataState<List<User>>> = flow {
+    fun execute(page: Int) : CommonFlow<DataState<List<User>>> = flow {
 
         emit(DataState.loading())
 
@@ -28,9 +30,9 @@ class GetUserList(
         } catch (e: Exception) {
             emit(DataState.error(message = e.message ?: "Unknown error"))
         }
-    }
+    }.asCommonFlow()
 
-    fun executeJustCache(page: Int) : Flow<DataState<List<User>>> = flow {
+    fun executeJustCache(page: Int) : CommonFlow<DataState<List<User>>> = flow {
         emit(DataState.loading())
         try {
             delay(500)
@@ -38,5 +40,5 @@ class GetUserList(
         } catch (e: Exception) {
             emit(DataState.error(message = e.message ?: "Unknown error"))
         }
-    }
+    }.asCommonFlow()
 }

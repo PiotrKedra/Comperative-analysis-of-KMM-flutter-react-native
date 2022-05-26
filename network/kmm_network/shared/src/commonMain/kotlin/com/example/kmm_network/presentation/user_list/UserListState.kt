@@ -6,4 +6,11 @@ data class UserListState(
     val isLoading: Boolean = false,
     val page: Int = 1,
     val users: List<User> = listOf()
-)
+) {
+    // zero argument constructor is required for swift
+    constructor(): this (
+        isLoading = false,
+        page = 1,
+        users = listOf()
+    )
+}
