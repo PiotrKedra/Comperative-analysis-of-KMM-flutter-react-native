@@ -53,6 +53,11 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
                 implementation("com.squareup.sqldelight:native-driver:1.5.3")
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt"){
+                    version {
+                        strictly("1.6.1-native-mt")
+                    }
+                }
             }
         }
     }
