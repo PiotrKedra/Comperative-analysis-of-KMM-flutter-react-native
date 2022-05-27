@@ -6,10 +6,11 @@ class UserListViewModel: ObservableObject {
     let getUserList: GetUserList
     
     @Published var state: UserListState = UserListState(isLoading: false, page: 1, users: [User]())
+
+    @Published var lastEmailInTheList: String = ""
     
     init(getUserList: GetUserList) {
         self.getUserList = getUserList
-        print("SHITEN")
         loadUserList()
     }
     
@@ -33,8 +34,6 @@ class UserListViewModel: ObservableObject {
             ).collectCommon(
                 coroutineScope: nil,
                 callback: { dataState in
-                    print("in callback")
-                    print(dataState)
                     if dataState != nil {
                         let data = dataState?.data
                         let message = dataState?.message
@@ -58,8 +57,33 @@ class UserListViewModel: ObservableObject {
     }
     
     func appendUserList(userList: [User]) {
-        for user in userList {
-            print("\(user.email)")
+        let currentState = (self.state.copy() as! UserListState)
+        let newUserList = currentState.users + userList
+        self.state = self.state.doCopy(
+            isLoading: currentState.isLoading,
+            page: currentState.page,
+            users: newUserList
+        )
+        self.lastEmailInTheList = newUserList.last?.email ?? ""
+    }
+    
+    func shouldQueryNextUserPage(user: User) -> Bool {
+        if ((user.email == self.lastEmailInTheList)
+            && isCurrentPageTooBig()
+            && !self.state.isLoading)
+        {
+            return true
         }
+        return false
+    }
+    
+    private func isCurrentPageTooBig() -> Bool {
+        return 6 * self.state.page <= self.state.users.count
+    }
+    
+    func nextPage() {
+        let currentSatate = (self.state.copy() as! UserListState)
+        self.updateState(page: Int(currentSatate.page) + 1)
+        self.loadUserList()
     }
 }

@@ -13,4 +13,9 @@ data class UserListState(
         page = 1,
         users = listOf()
     )
+
+    companion object {
+        const val BASE_URL = "https://reqres.in/api/"
+        const val PAGINATION_PAGE_SIZE = 6
+    }
 }

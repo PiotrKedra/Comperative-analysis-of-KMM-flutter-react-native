@@ -20,17 +20,49 @@ struct UserListScreen: View {
     }
     
     var body: some View {
-        VStack {
-            Text("\(viewModel.state.page)")
-            Button(
-                action: {
-                    viewModel.updateState(page: Int(viewModel.state.page) + 1)
-                },
-                label: {
-                    Text("Increment Page")
+        NavigationView {
+            VStack {
+                NavigationLink(destination: UserModificationScreen()){
+                    Text("TESCIOR")
+                        .foregroundColor(.white)
+                        .frame(width: 200, height: 40)
+                        .background(Color.green)
+                        .cornerRadius(15)
+                        .padding()
                 }
+                List {
+                    ForEach(viewModel.state.users, id: \.self.id) { user in
+
+                        NavigationLink(destination: UserDetailsScreen(user: user)){
+                            UserCard(user: user)
+                                .onAppear(perform: {
+                                    if (viewModel.shouldQueryNextUserPage(user: user)) {
+                                        viewModel.nextPage()
+                                    }
+                                })
+                        }
+                        .frame(
+                            minWidth: 0,
+                            maxWidth: .infinity
+                          )
+                        .background(Color.red)
+                        .listRowInsets(EdgeInsets())
+                        .padding(.top, 10)
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
+            }
+            .navigationBarHidden(true)
+            .frame(
+              minWidth: 0,
+              maxWidth: .infinity,
+              minHeight: 0,
+              maxHeight: .infinity,
+              alignment: .topLeading
             )
-        
+            .background(Color.green)
+            
         }
+        
     }
 }
