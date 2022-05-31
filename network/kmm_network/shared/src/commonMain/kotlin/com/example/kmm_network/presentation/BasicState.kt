@@ -5,4 +5,9 @@ import com.example.kmm_network.domain.model.User
 data class BasicState(
     val isLoading: Boolean = false,
     val user: User? = null
-)
+){
+    constructor(): this (
+        isLoading = false,
+        user = null
+    )
+}

@@ -3,26 +3,26 @@ import shared
 
 struct UserListScreen: View {
     
-    private let networkModule: NetworkModule
-    private let cacheModule: CacheModule
     private let userUseCaseModule: UserModule
     
     @ObservedObject var viewModel: UserListViewModel
     
-    init(networkModule: NetworkModule, cacheModule: CacheModule) {
-        self.networkModule = networkModule
-        self.cacheModule = cacheModule
-        self.userUseCaseModule = UserModule(
-            networkModule: self.networkModule,
-            cacheModule: self.cacheModule
-        )
-        self.viewModel = UserListViewModel(getUserList: self.userUseCaseModule.getUserList)
+    init(viewModel: UserListViewModel, userUseCaseModule: UserModule) {
+        self.userUseCaseModule = userUseCaseModule
+        self.viewModel = viewModel
     }
     
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: UserModificationScreen()){
+                NavigationLink(destination:
+                        UserModificationScreen(
+                            viewModel: UserModificationViewModel(
+                                user: nil,
+                                createUser: userUseCaseModule.createUser,
+                                updateUser: userUseCaseModule.updateUser,
+                                callback: viewModel.refresh
+                        ))){
                     Text("TESCIOR")
                         .foregroundColor(.white)
                         .frame(width: 200, height: 40)
@@ -32,8 +32,13 @@ struct UserListScreen: View {
                 }
                 List {
                     ForEach(viewModel.state.users, id: \.self.id) { user in
-
-                        NavigationLink(destination: UserDetailsScreen(user: user)){
+                        let userDetailViewModel = UserDetailsViewModel(
+                            user: user,
+                            userUseCaseModule: self.userUseCaseModule,
+                            refreshCallback: self.viewModel.refresh
+                        )
+                        NavigationLink(destination: UserDetailsScreen(viewModel: userDetailViewModel)
+                        ) {
                             UserCard(user: user)
                                 .onAppear(perform: {
                                     if (viewModel.shouldQueryNextUserPage(user: user)) {

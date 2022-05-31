@@ -3,21 +3,35 @@ import shared
 
 struct UserDetailsScreen: View {
     
-    private let user: User
+    @ObservedObject var viewModel: UserDetailsViewModel
     
-    init(user: User) {
-        self.user = user
+    @Environment(\.presentationMode) var presentation
+    
+    init(viewModel: UserDetailsViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
         Text("User Details Screen")
-        NavigationLink(destination: UserModificationScreen(user: self.user)){
-            Text("TESCIOR")
+        Text("\(self.viewModel.state.user!.email)")
+        NavigationLink(destination:
+                UserModificationScreen(
+                    viewModel: UserModificationViewModel(
+                        user: self.viewModel.state.user,
+                        createUser: self.viewModel.userUseCaseModule.createUser,
+                        updateUser: self.viewModel.userUseCaseModule.updateUser,
+                        callback: self.viewModel.refreshCallback
+                ))){
+            Text("Update user")
                 .foregroundColor(.white)
                 .frame(width: 200, height: 40)
-                .background(Color.green)
+                .background(Color.red)
                 .cornerRadius(15)
                 .padding()
+        }
+        Button("Delete user") {
+            self.viewModel.deleteUserById(id: self.viewModel.state.user!.id)
+            self.presentation.wrappedValue.dismiss()
         }
     }
 }

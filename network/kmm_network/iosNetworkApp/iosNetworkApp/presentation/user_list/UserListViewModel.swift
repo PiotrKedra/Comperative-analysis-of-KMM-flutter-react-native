@@ -11,6 +11,7 @@ class UserListViewModel: ObservableObject {
     
     init(getUserList: GetUserList) {
         self.getUserList = getUserList
+        print("LOADING USERS")
         loadUserList()
     }
     
@@ -28,9 +29,33 @@ class UserListViewModel: ObservableObject {
     
     func loadUserList() {
         let currentState = (self.state.copy() as! UserListState)
-        do {
-            try getUserList.execute(
-                page: Int32(currentState.page)
+        getUserList.execute(
+            page: Int32(currentState.page)
+        ).collectCommon(
+            coroutineScope: nil,
+            callback: { dataState in
+                if dataState != nil {
+                    let data = dataState?.data
+                    let message = dataState?.message
+                    let loading = dataState?.isLoading ?? false
+                    
+                    self.updateState(isLoading: loading)
+                    
+                    if data != nil {
+                        self.appendUserList(userList: data as! [User])
+                    }
+                    
+                    if message != nil {
+                        print("Error message: \((message ?? "NON ERROR") as String)")
+                    }
+                }
+            }
+        )
+    }
+    
+    func refresh() {
+        getUserList.executeJustCache(
+                page: 1
             ).collectCommon(
                 coroutineScope: nil,
                 callback: { dataState in
@@ -42,7 +67,12 @@ class UserListViewModel: ObservableObject {
                         self.updateState(isLoading: loading)
                         
                         if data != nil {
-                            self.appendUserList(userList: data as! [User])
+                            self.state = self.state.doCopy(
+                                isLoading: loading,
+                                page: 1,
+                                users: data as! [User]
+                            )
+                            self.lastEmailInTheList = (data as! [User]).last?.email ?? ""
                         }
                         
                         if message != nil {
@@ -51,9 +81,6 @@ class UserListViewModel: ObservableObject {
                     }
                 }
             )
-        } catch {
-            print("\(error)")
-        }
     }
     
     func appendUserList(userList: [User]) {
