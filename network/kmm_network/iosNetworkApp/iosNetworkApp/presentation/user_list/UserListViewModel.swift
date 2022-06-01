@@ -11,7 +11,6 @@ class UserListViewModel: ObservableObject {
     
     init(getUserList: GetUserList) {
         self.getUserList = getUserList
-        print("LOADING USERS")
         loadUserList()
     }
     

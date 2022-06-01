@@ -14,7 +14,47 @@ struct UserListScreen: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            ZStack {
+                VStack {
+                    Text("User list")
+                        .font(.largeTitle)
+                        .padding()
+                    
+                    List {
+                        ForEach(viewModel.state.users, id: \.self.id) { user in
+                            let userDetailViewModel = UserDetailsViewModel(
+                                user: user,
+                                userUseCaseModule: self.userUseCaseModule,
+                                refreshCallback: self.viewModel.refresh
+                            )
+                            NavigationLink(destination: UserDetailsScreen(viewModel: userDetailViewModel)
+                            ) {
+                                UserCard(user: user)
+                                    .onAppear(perform: {
+                                        if (viewModel.shouldQueryNextUserPage(user: user)) {
+                                            viewModel.nextPage()
+                                        }
+                                    })
+                            }
+                            .frame(
+                                minWidth: 0,
+                                maxWidth: .infinity
+                              )
+                            .listRowInsets(EdgeInsets())
+                            .padding(.top, 10)
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                }
+                .navigationBarHidden(true)
+                .frame(
+                  minWidth: 0,
+                  maxWidth: .infinity,
+                  minHeight: 0,
+                  maxHeight: .infinity,
+                  alignment: .topLeading
+                )
+                
                 NavigationLink(destination:
                         UserModificationScreen(
                             viewModel: UserModificationViewModel(
@@ -22,52 +62,17 @@ struct UserListScreen: View {
                                 createUser: userUseCaseModule.createUser,
                                 updateUser: userUseCaseModule.updateUser,
                                 callback: viewModel.refresh
-                        ))){
-                    Text("TESCIOR")
+                        )))
+                {
+                    Text("ADD")
                         .foregroundColor(.white)
-                        .frame(width: 200, height: 40)
-                        .background(Color.green)
-                        .cornerRadius(15)
+                        .frame(width: 80, height: 80)
+                        .background(Color.red)
+                        .cornerRadius(2)
                         .padding()
                 }
-                List {
-                    ForEach(viewModel.state.users, id: \.self.id) { user in
-                        let userDetailViewModel = UserDetailsViewModel(
-                            user: user,
-                            userUseCaseModule: self.userUseCaseModule,
-                            refreshCallback: self.viewModel.refresh
-                        )
-                        NavigationLink(destination: UserDetailsScreen(viewModel: userDetailViewModel)
-                        ) {
-                            UserCard(user: user)
-                                .onAppear(perform: {
-                                    if (viewModel.shouldQueryNextUserPage(user: user)) {
-                                        viewModel.nextPage()
-                                    }
-                                })
-                        }
-                        .frame(
-                            minWidth: 0,
-                            maxWidth: .infinity
-                          )
-                        .background(Color.red)
-                        .listRowInsets(EdgeInsets())
-                        .padding(.top, 10)
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                }
+                .position(x: 330, y: 730)
             }
-            .navigationBarHidden(true)
-            .frame(
-              minWidth: 0,
-              maxWidth: .infinity,
-              minHeight: 0,
-              maxHeight: .infinity,
-              alignment: .topLeading
-            )
-            .background(Color.green)
-            
         }
-        
     }
 }

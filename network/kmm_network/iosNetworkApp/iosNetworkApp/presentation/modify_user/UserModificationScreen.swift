@@ -22,22 +22,42 @@ struct UserModificationScreen: View {
         VStack(alignment: .leading) {
             if (self.viewModel.state.user == nil) {
                 Text("Create new user")
+                    .font(.largeTitle)
             } else {
                 Text("Update user")
-                Text("\(self.viewModel.state.user?.email ?? "xd")")
+                    .font(.largeTitle)
             }
             TextField("First name", text: $firstName)
+                .font(.title2)
+
             TextField("Last name", text: $lastName)
+                .font(.title2)
+
             TextField("Email", text: $email)
+                .font(.title2)
+
             
-            Button("Done") {
+            Button("Save") {
                 if (self.viewModel.state.user == nil) {
                     self.createNewUser()
                 } else {
                     self.updateUser()
                 }
             }
+            .foregroundColor(.white)
+            .frame(width: 80, height: 50)
+            .background(Color.red)
+            .cornerRadius(2)
+            .font(.title2)
         }
+        .frame(
+            minWidth: 0,
+            maxWidth: .infinity,
+            minHeight: 0,
+            maxHeight: .infinity,
+            alignment: .topLeading
+          )
+        .padding(20)
         .onAppear {
             let user = self.viewModel.state.user
             if (user != nil) {
