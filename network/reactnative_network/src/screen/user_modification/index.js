@@ -1,4 +1,4 @@
 import React from 'react';
-import UserModificationContainer from './UserModificationContainer';
+import UserModificationView from './UserModificationView';
 
-export default UserModificationContainer
+export default UserModificationView

@@ -1,4 +1,4 @@
 import React from 'react';
-import UserListContainer from './UserListContainer';
+import UserListView from './UserListView';
 
-export default UserListContainer
+export default UserListView

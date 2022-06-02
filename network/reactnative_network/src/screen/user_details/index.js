@@ -1,4 +1,4 @@
 import React from 'react';
-import UserDetailsContainer from './UserDetailsContainer';
+import UserDetailsView from './UserDetailsView';
 
-export default UserDetailsContainer
+export default UserDetailsView

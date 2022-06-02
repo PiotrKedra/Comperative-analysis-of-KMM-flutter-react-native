@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const UserModificationContainer = () => (
+const UserModificationView = () => (
   <View>
     <Text>UserModificationContainer</Text>
   </View>
 );
 
-export default UserModificationContainer;
+export default UserModificationView;
