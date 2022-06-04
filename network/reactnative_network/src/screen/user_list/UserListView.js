@@ -2,49 +2,30 @@ import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadAllUsers } from '../../redux/userSlice';
-import { createUser, deleteUser, getUserById, getUsers, updateUser } from '../../service/userApi';
+import { loadNextPageUserList, loadUserList } from '../../service/userService';
 
 
 const UserListView = () => {
   const userList = useSelector((state) => state.users)
   const dispatch = useDispatch()
 
+  const [page, setPage] = React.useState(1)
+
   console.log('DUPA')
-  console.log(userList)
 
   React.useEffect(() => {
     loadUsers()
   }, [])
 
   const loadUsers = async () => {
-    const users = await getUsers()
-    console.log("GET ALL")
-    console.log(users)
+    const s = await loadUserList()
+    console.log(s)
+  }
 
-    const getUser = await getUserById(1)
-    console.log("GET BY ID")
-    console.log(getUser)
-
-    const create = await createUser({
-      email: 'DUPDA',
-      firstName: "BOB",
-      lastName: "Chill"
-    })
-    console.log("CREATE")
-    console.log(create)
-
-    const update = await updateUser({
-      id: '1',
-      email: 'DUPDA',
-      firstName: "BOB",
-      lastName: "Chill"
-    })
-    console.log("update")
-    console.log(update)
-
-    const deleteU = await deleteUser(1)
-    console.log("DELETE")
-    console.log(deleteU)
+  const loadNextPage = async () => {
+    const a = await loadNextPageUserList(page + 1)
+    setPage(page + 1)
+    console.log(a)
   }
 
   return (
@@ -53,6 +34,7 @@ const UserListView = () => {
       <Button
         title="Load users"
         onPress={() => {
+          loadNextPage()
           dispatch(loadAllUsers([
             {id: 1, email: 'xd', firstName: 'Bob', lastName: 'Hopf'},
             {id: 2, email: 'xd', firstName: 'Bob', lastName: 'Hopf'},

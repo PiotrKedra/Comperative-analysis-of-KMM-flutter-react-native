@@ -1,9 +1,6 @@
-import React from 'react';
-
 const BASE_URL = "https://reqres.in/api/"
-const PAGINATION_PAGE_SIZE = 6
 
-export const getUsers = async (page) => {
+export const api_getUserList = async (page) => {
   try {
     const response = await fetch(`${BASE_URL}users/?page=${page}`);
     const json = await response.json();
@@ -19,7 +16,7 @@ export const getUsers = async (page) => {
   }
 }
 
-export const getUserById = async (id) => {
+export const api_getUserById = async (id) => {
   try {
     const response = await fetch(`${BASE_URL}users/${id}`);
     const json = await response.json();
@@ -35,7 +32,7 @@ export const getUserById = async (id) => {
   }
 }
 
-export const createUser = async (user) => {
+export const api_createUser = async (user) => {
   try {
     const response = await fetch(`${BASE_URL}users`, {
       method: 'POST',
@@ -63,7 +60,7 @@ export const createUser = async (user) => {
   }
 }
 
-export const updateUser = async (user) => {
+export const api_updateUser = async (user) => {
   try {
     const response = await fetch(`${BASE_URL}users/${user.id}`, {
       method: 'PUT',
@@ -85,7 +82,7 @@ export const updateUser = async (user) => {
   }
 }
 
-export const deleteUser = async (id) => {
+export const api_deleteUser = async (id) => {
   try {
     await fetch(`${BASE_URL}users/${id}`, {
       method: 'DELETE',
