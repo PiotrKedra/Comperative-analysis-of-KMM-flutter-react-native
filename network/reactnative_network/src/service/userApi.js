@@ -69,9 +69,8 @@ export const api_updateUser = async (user) => {
         job: user.lastName
       })
     });
-    const json = await response.json();
     return {
-      data: json,
+      data: user,
       message: null
     }
   } catch (e) {

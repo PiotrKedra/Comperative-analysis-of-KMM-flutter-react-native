@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadAllUsers } from '../../redux/userSlice';
-import { loadNextPageUserList, loadUserList } from '../../service/userService';
+import { createUser, deleteUser, loadNextPageUserList, loadUserList, updateUser } from '../../service/userService';
 
 
 const UserListView = () => {
@@ -28,6 +28,11 @@ const UserListView = () => {
     console.log(a)
   }
 
+  const addUser = async () => {
+    const s = await deleteUser(1)
+    console.log(s)
+  }
+
   return (
     <View>
       <Text>UserListContainer</Text>
@@ -42,6 +47,8 @@ const UserListView = () => {
           ]))
         }}
       />
+
+      <Button title="action" onPress={() => addUser()}/>
     </View>
   );
 }

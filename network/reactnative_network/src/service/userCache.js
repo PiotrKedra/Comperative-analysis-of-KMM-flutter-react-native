@@ -43,6 +43,58 @@ export const cache_appendUserList = async (userList) => {
   }
 }
 
+export const cache_addNewUser = async (user) => {
+  try {
+    const value = await AsyncStorage.getItem(USER_LIST_STORAGE_KEY)
+    if (value != null) {
+      const userList = JSON.parse(value)
+      userList.push(user)
+      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(userList))
+      return userList
+    } else {
+      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify([user]))
+      return [user]
+    }
+  } catch (e) {
+    showErrorToast(e)
+  }
+}
+
+export const cache_updateUser = async (user) => {
+  try {
+    const value = await AsyncStorage.getItem(USER_LIST_STORAGE_KEY)
+    if (value != null) {
+      const currentUsers = JSON.parse(value)
+      const userList = currentUsers.filter(u => u.id !== user.id)
+      userList.push(user)
+      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(userList))
+      return userList
+    } else {
+      showErrorToast("Some error while updating the user")
+      return []
+    }
+  } catch (e) {
+    showErrorToast(e)
+  }
+}
+
+export const cache_deleteUser = async (id) => {
+  try {
+    const value = await AsyncStorage.getItem(USER_LIST_STORAGE_KEY)
+    if (value != null) {
+      const currentUsers = JSON.parse(value)
+      const userList = currentUsers.filter(u => u.id !== id)
+      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(userList))
+      return userList
+    } else {
+      showErrorToast("Some error while deleting the user")
+      return []
+    }
+  } catch (e) {
+    showErrorToast(e)
+  }
+}
+
 const showErrorToast = (error) => {
   Toast.show({
     type: 'error',
