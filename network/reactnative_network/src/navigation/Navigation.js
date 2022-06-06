@@ -11,9 +11,9 @@ const Stack = createNativeStackNavigator();
 const Navigation = () => (
   <NavigationContainer>
     <Stack.Navigator>
-      <Stack.Screen name={USER_LIST_ROUTE} component={UserList} />
-      <Stack.Screen name={USER_DETAILS_ROUTE} component={UserDetails} />
-      <Stack.Screen name={USER_MODIFICATION_ROUTE} component={UserModification} />
+      <Stack.Screen name={USER_LIST_ROUTE} component={UserList} options={{ title: 'User List' }}/>
+      <Stack.Screen name={USER_DETAILS_ROUTE} component={UserDetails} options={{ title: 'User Details' }}/>
+      <Stack.Screen name={USER_MODIFICATION_ROUTE} component={UserModification} options={{ title: 'Modify User' }}/>
     </Stack.Navigator>
   </NavigationContainer>
 );

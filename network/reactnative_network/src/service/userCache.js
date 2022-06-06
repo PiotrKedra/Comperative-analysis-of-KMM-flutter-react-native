@@ -5,7 +5,7 @@ const USER_LIST_STORAGE_KEY = '@user_list_key'
 
 export const cache_initUserList = async (userList) => {
   try {
-    await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(userList))
+    await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(sortUserList(userList)))
     return userList
   } catch (e) {
     showErrorToast(e)
@@ -32,10 +32,10 @@ export const cache_appendUserList = async (userList) => {
     if (value != null) {
       const currentUsers = JSON.parse(value)
       const appendedList = currentUsers.concat(userList)
-      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(appendedList))
+      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(sortUserList(appendedList)))
       return appendedList
     } else {
-      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(userList))
+      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(sortUserList(userList)))
       return userList
     }
   } catch (e) {
@@ -49,7 +49,7 @@ export const cache_addNewUser = async (user) => {
     if (value != null) {
       const userList = JSON.parse(value)
       userList.push(user)
-      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(userList))
+      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(sortUserList(userList)))
       return userList
     } else {
       await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify([user]))
@@ -67,7 +67,7 @@ export const cache_updateUser = async (user) => {
       const currentUsers = JSON.parse(value)
       const userList = currentUsers.filter(u => u.id !== user.id)
       userList.push(user)
-      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(userList))
+      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(sortUserList(userList)))
       return userList
     } else {
       showErrorToast("Some error while updating the user")
@@ -84,7 +84,7 @@ export const cache_deleteUser = async (id) => {
     if (value != null) {
       const currentUsers = JSON.parse(value)
       const userList = currentUsers.filter(u => u.id !== id)
-      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(userList))
+      await AsyncStorage.setItem(USER_LIST_STORAGE_KEY, JSON.stringify(sortUserList(userList)))
       return userList
     } else {
       showErrorToast("Some error while deleting the user")
@@ -93,6 +93,10 @@ export const cache_deleteUser = async (id) => {
   } catch (e) {
     showErrorToast(e)
   }
+}
+
+const sortUserList = (userList) => {
+  return userList.sort((a, b) => (a.id > b.id) ? 1 : -1)
 }
 
 const showErrorToast = (error) => {

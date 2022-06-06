@@ -37,16 +37,16 @@ export const api_createUser = async (user) => {
     const response = await fetch(`${BASE_URL}users`, {
       method: 'POST',
       body: JSON.stringify({
-        name: user.firstName,
-        job: user.lastName
+        name: user.first_name,
+        job: user.last_name
       })
     });
     const json = await response.json();
     return {
       data: {
         id: json.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        first_name: user.first_name,
+        last_name: user.last_name,
         email: user.email,
         avatar: user.avatar,
       },
@@ -65,8 +65,8 @@ export const api_updateUser = async (user) => {
     const response = await fetch(`${BASE_URL}users/${user.id}`, {
       method: 'PUT',
       body: JSON.stringify({
-        name: user.firstName,
-        job: user.lastName
+        name: user.first_name,
+        job: user.first_name
       })
     });
     return {

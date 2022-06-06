@@ -1,54 +1,50 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadAllUsers } from '../../redux/userSlice';
-import { createUser, deleteUser, loadNextPageUserList, loadUserList, updateUser } from '../../service/userService';
+import { saveUserList } from '../../redux/userSlice';
+import UserCard from './components/UserCard';
+import { loadNextPageUserList, loadUserList } from '../../service/userService';
+import UserListSeparator from './components/UserListSeparator';
+import Button from '../../components/Button';
+import { USER_MODIFICATION_ROUTE } from '../../navigation/ROUTES';
 
 
-const UserListView = () => {
+const UserListView = ({navigation}) => {
   const userList = useSelector((state) => state.users)
   const dispatch = useDispatch()
 
   const [page, setPage] = React.useState(1)
 
-  console.log('DUPA')
-
   React.useEffect(() => {
-    loadUsers()
+    initUserList()
   }, [])
 
-  const loadUsers = async () => {
-    const s = await loadUserList()
-    console.log(s)
+  const initUserList = async () => {
+    const users = await loadUserList()
+    dispatch(saveUserList(users))
   }
 
   const loadNextPage = async () => {
-    const a = await loadNextPageUserList(page + 1)
+    const users = await loadNextPageUserList(page + 1)
     setPage(page + 1)
-    console.log(a)
-  }
-
-  const addUser = async () => {
-    const s = await deleteUser(1)
-    console.log(s)
+    dispatch(saveUserList(users))
   }
 
   return (
-    <View>
-      <Text>UserListContainer</Text>
-      <Button
-        title="Load users"
-        onPress={() => {
-          loadNextPage()
-          dispatch(loadAllUsers([
-            {id: 1, email: 'xd', firstName: 'Bob', lastName: 'Hopf'},
-            {id: 2, email: 'xd', firstName: 'Bob', lastName: 'Hopf'},
-            {id: 3, email: 'xd', firstName: 'Bob', lastName: 'Hopf'},
-          ]))
-        }}
+    <View style={{ width: '100%'}}>
+      <FlatList
+        data={userList}
+        renderItem={({item}) => <UserCard user={item} navigation={navigation}/>}
+        onEndReachedThreshold={0.5}
+        onEndReached={() => loadNextPage()}
+        ItemSeparatorComponent={() => <UserListSeparator/>}
       />
-
-      <Button title="action" onPress={() => addUser()}/>
+      <View style={{position: 'absolute', bottom: 20, right: 20}}>
+        <Button
+          onPress={() => navigation.navigate(USER_MODIFICATION_ROUTE)}
+          text='Add'
+        />
+      </View>
     </View>
   );
 }
