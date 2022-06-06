@@ -47,7 +47,6 @@ class UserDetailViewModel @Inject constructor(
 
     fun deleteUser(id: Int) {
         deleteUser.execute(id).onEach { dataState ->
-            println("Dupa: deleting user")
             println(dataState.isLoading)
 
             dataState.message?.let { message ->

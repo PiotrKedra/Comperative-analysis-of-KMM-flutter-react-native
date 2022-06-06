@@ -44,7 +44,7 @@ class UserServiceImpl(
 
     override suspend fun delete(userId: Int) {
         val response: HttpResponse = client.get("${baseUrl}users/$userId")
-        println("Dupa Delete status: ${response.status}")
+        println("Delete status: ${response.status}")
     }
 
     companion object {
