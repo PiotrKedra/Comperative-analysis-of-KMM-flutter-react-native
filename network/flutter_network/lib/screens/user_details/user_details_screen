@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_network/screens/user_modfication/user_modification_screen.dart';
+
+class UserDetailsScreen extends StatelessWidget {
+  const UserDetailsScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('User Details Screen')
+      ),
+      body: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const UserModificationScreen();
+            }));
+        },
+        child: Image.network(
+          'https://picsum.photos/250?image=9',
+        ),
+      ),
+    );
+  }
+}
