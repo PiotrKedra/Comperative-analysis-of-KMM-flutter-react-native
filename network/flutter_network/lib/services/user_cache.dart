@@ -30,6 +30,4 @@ class UserSharedPreferencesUtils {
       return _dataMap;
     }).toList();
   }
-
-
 }
