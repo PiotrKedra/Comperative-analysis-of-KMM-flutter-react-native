@@ -23,3 +23,29 @@ Future<List<User>> getUserListPage(int pageNr) async {
       .get(Uri.parse(base_url + 'users?page=' + pageNr.toString()));
   return compute(pareUsers, response.body);
 }
+
+Future<User> createUser(User user) async {
+  await http.post(
+    Uri.parse(base_url + 'users'), 
+    body: jsonEncode(<String, String>{
+      'name': user.firstName,
+      'job': user.lastName
+    })
+  );
+  return user;
+}
+
+Future<User> updateUser(User user) async {
+  await http.put(
+    Uri.parse(base_url + 'users'), 
+    body: jsonEncode(<String, String>{
+      'name': user.firstName,
+      'job': user.lastName
+    })
+  );
+  return user;
+}
+
+void deleteUser(User user) async {
+  await http.delete(Uri.parse(base_url + 'users/' + user.userId.toString()));
+}

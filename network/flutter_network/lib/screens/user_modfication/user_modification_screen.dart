@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_network/models/user.dart';
+import 'package:flutter_network/providers/user_list_model.dart';
+import 'dart:math';
+
+import 'package:flutter_network/services/user_api.dart';
+import 'package:flutter_network/services/user_cache.dart';
+import 'package:provider/provider.dart';
 
 
 class UserModificationScreen extends StatefulWidget {
@@ -24,6 +30,50 @@ class _UserModificationScreenState extends State<UserModificationScreen> {
     super.dispose();
   }
 
+  void modifyUser() async {
+    List<User> newUserList;
+    if (widget.user != null) {
+      newUserList = await updateUserList();
+
+    } else {
+      newUserList = await createUserList();
+    }
+    newUserList.sort((a, b) => a.userId.compareTo(b.userId));
+    await UserSharedPreferencesUtils.putObjectList(newUserList);
+    Provider.of<UserListModel>(context, listen: false).setUserList(newUserList);
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
+  Future<List<User>> updateUserList() async {
+    User user = User(
+      userId: widget.user!.userId,
+      firstName: firstNameControler.text,
+      lastName: lastNameControler.text,
+      email: emailControler.text,
+      avatar: widget.user!.avatar
+    );
+    user = await updateUser(user);
+    List<User> currentUserList = UserSharedPreferencesUtils.getObjectList();
+    List<User> userList = currentUserList.where((i) => i.userId != user.userId).toList();
+    userList.add(user);
+    return userList;
+  }
+
+  Future<List<User>> createUserList() async {
+    User user = User(
+      userId: Random().nextInt(10000),
+      firstName: firstNameControler.text,
+      lastName: lastNameControler.text,
+      email: emailControler.text,
+      avatar: "https://cdn.pixabay.com/photo/2015/01/06/16/14/woman-590490_960_720.jpg"
+    );
+    user = await createUser(user);
+    List<User> userList = UserSharedPreferencesUtils.getObjectList();
+    userList.add(user);
+    return userList;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -38,6 +88,9 @@ class _UserModificationScreenState extends State<UserModificationScreen> {
       userLastName = widget.user!.lastName;
       userEmail = widget.user!.email;
       title = "Update user";
+      firstNameControler.text = userFirstName;
+      lastNameControler.text = userLastName;
+      emailControler.text = userEmail;
     }
 
     return Scaffold(
@@ -83,24 +136,7 @@ class _UserModificationScreenState extends State<UserModificationScreen> {
       floatingActionButton: FloatingActionButton(
         // When the user presses the button, show an alert dialog containing
         // the text that the user has entered into the text field.
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                // Retrieve the text the that user has entered by using the
-                // TextEditingController.
-                content: Column(
-                  children: [
-                    Text(firstNameControler.text),
-                    Text(lastNameControler.text),
-                    Text(emailControler.text),
-                  ],
-                )
-              );
-            },
-          );
-        },
+        onPressed: () => modifyUser(),
         tooltip: 'Show me the value!',
         child: const Icon(Icons.text_fields),
       ),

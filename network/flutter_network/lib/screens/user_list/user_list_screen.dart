@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_network/models/user.dart';
 import 'package:flutter_network/providers/user_list_model.dart';
 import 'package:flutter_network/screens/user_list/widgets/user_tile.dart';
-import 'package:flutter_network/screens/user_modfication/user_modification_screen.dart';
 import 'package:flutter_network/services/user_api.dart';
 import 'package:flutter_network/services/user_cache.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +68,6 @@ class _UserListState extends State<UserList> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_loadNextPage);
-    print('DUPKA');
   }
 
   void _loadNextPage() async {
@@ -81,7 +79,6 @@ class _UserListState extends State<UserList> {
     List<User> userListPage = await getUserListPage(_page);
     List<User> currentUserList = UserSharedPreferencesUtils.getObjectList();
     List<User> userList = currentUserList + userListPage;
-    print(userList.length);
     await UserSharedPreferencesUtils.putObjectList(userList);
     Provider.of<UserListModel>(context, listen: false).setUserList(userList);
     _isLoading = false;
@@ -98,9 +95,6 @@ class _UserListState extends State<UserList> {
     return Expanded(
       child: ListView.builder(
         controller: _scrollController,
-        // scrollDirection: Axis.vertical,
-        // physics: const NeverScrollableScrollPhysics(),
-        // shrinkWrap: true,
         itemCount: widget.users.length,
         itemBuilder: (_, int index) {
           return UserTile(user: widget.users[index]);
