@@ -15,8 +15,6 @@ class UserListScreen extends StatefulWidget {
 }
 
 class _UserListScreenState extends State<UserListScreen> {
-  
-  late Future<List<User>> futureUser;
 
   @override
   void initState() {
@@ -25,9 +23,8 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 
   void initUserList() async {
-    futureUser = fetchUserList();
-    List<User> userList = await futureUser;
-    Provider.of<UserListModel>(context, listen: false).init(userList);
+    List<User> userList = await fetchUserList();
+    Provider.of<UserListModel>(context, listen: false).setUserList(userList);
     await UserSharedPreferencesUtils.putObjectList(userList);
     print(UserSharedPreferencesUtils.getObjectList());
   }
@@ -39,39 +36,76 @@ class _UserListScreenState extends State<UserListScreen> {
       appBar: AppBar(
         title: const Text('User List')
       ),
-      body: SingleChildScrollView(
-        child: ListView (
-          scrollDirection: Axis.vertical,
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          children: [
-            Consumer<UserListModel>(
-              builder: (context, userListModel, child) {
-                return UserList(users: userListModel.users);
-              },
-            ),
-          ]
-        ),
-      )
+      body: Column(
+        children: [
+          Consumer<UserListModel>(
+            builder: (context, userListModel, child) {
+              return UserList(users: userListModel.users);
+            },
+          ),
+        ]
+      ),
     );
   }
 }
 
-class UserList extends StatelessWidget {
+class UserList extends StatefulWidget {
   const UserList({Key? key, required this.users}) : super(key: key);
 
   final List<User> users;
 
   @override
+  State<UserList> createState() => _UserListState();
+}
+
+class _UserListState extends State<UserList> {
+
+  late ScrollController _scrollController;
+
+  int _page = 1;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_loadNextPage);
+    print('DUPKA');
+  }
+
+  void _loadNextPage() async {
+    if (_isLoading == true) {
+      return;
+    }
+    _isLoading = true;
+    _page += 1;
+    List<User> userListPage = await getUserListPage(_page);
+    List<User> currentUserList = UserSharedPreferencesUtils.getObjectList();
+    List<User> userList = currentUserList + userListPage;
+    print(userList.length);
+    await UserSharedPreferencesUtils.putObjectList(userList);
+    Provider.of<UserListModel>(context, listen: false).setUserList(userList);
+    _isLoading = false;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_loadNextPage);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: users.length,
-      itemBuilder: (BuildContext context, int index) {
-        return UserTile(user: users[index]);
-      }
+    return Expanded(
+      child: ListView.builder(
+        controller: _scrollController,
+        // scrollDirection: Axis.vertical,
+        // physics: const NeverScrollableScrollPhysics(),
+        // shrinkWrap: true,
+        itemCount: widget.users.length,
+        itemBuilder: (_, int index) {
+          return UserTile(user: widget.users[index]);
+        }
+      )
     );
   }
 }

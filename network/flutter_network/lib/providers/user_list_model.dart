@@ -8,9 +8,8 @@ class UserListModel extends ChangeNotifier {
 
   List<User> get users => _users;
 
-  void init(List<User> users) {
+  void setUserList(List<User> users) {
     _users = users;
     notifyListeners();
   }
-
 }

@@ -17,3 +17,9 @@ List<User> pareUsers(String jsonResponse) {
   final parsed = jsonDecode(jsonResponse)['data'].cast<Map<String, dynamic>>();
   return parsed.map<User>((json) => User.fromJson(json)).toList();
 }
+
+Future<List<User>> getUserListPage(int pageNr) async {
+  final response = await http
+      .get(Uri.parse(base_url + 'users?page=' + pageNr.toString()));
+  return compute(pareUsers, response.body);
+}

@@ -9,28 +9,31 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context, 
-          MaterialPageRoute(builder: (context) => UserDetailsScreen(user: user))
-        );
-      },
-      child: Row(
-        children: [
-          Image.network(user.avatar),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(user.firstName + ' ' + user.lastName),
-                Text(user.email),
-                //   )
-                const Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"), 
-              ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (context) => UserDetailsScreen(user: user))
+          );
+        },
+        child: Row(
+          children: [
+            Image.network(user.avatar),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(user.firstName + ' ' + user.lastName),
+                  Text(user.email),
+                  //   )
+                  const Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"), 
+                ],
+              )
             )
-          )
-        ]
+          ]
+        )
       )
     );
   }
