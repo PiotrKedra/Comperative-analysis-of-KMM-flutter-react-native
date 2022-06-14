@@ -23,4 +23,17 @@ class User {
       avatar: json['avatar'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    "id": userId, 
+    "first_name": firstName,
+    "last_name": lastName,
+    "email": email,
+    "avatar": avatar
+  };
+
+  @override
+  String toString() {
+    return "userId: $userId, email: $email";
+  }
 }

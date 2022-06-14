@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_network/providers/user_list_model.dart';
 import 'package:flutter_network/screens/user_list/user_list_screen.dart';
+import 'package:flutter_network/services/user_cache.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserListModel(),
-      child: const MyApp(),
-    ),
-  );
+  AppConfig.init(() {
+    runApp(
+        ChangeNotifierProvider(
+          create: (context) => UserListModel(),
+          child: const MyApp(),
+        ),
+      );
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -24,5 +27,13 @@ class MyApp extends StatelessWidget {
       ),
       home: const UserListScreen(),
     );
+  }
+}
+
+class AppConfig {
+  static Future init(VoidCallback callback) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await UserSharedPreferencesUtils.init();
+    callback();
   }
 }

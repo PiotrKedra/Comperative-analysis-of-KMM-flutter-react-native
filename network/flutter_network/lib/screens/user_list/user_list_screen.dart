@@ -4,6 +4,7 @@ import 'package:flutter_network/providers/user_list_model.dart';
 import 'package:flutter_network/screens/user_details/user_details_screen';
 import 'package:flutter_network/screens/user_modfication/user_modification_screen.dart';
 import 'package:flutter_network/services/user_api.dart';
+import 'package:flutter_network/services/user_cache.dart';
 import 'package:provider/provider.dart';
 
 class UserListScreen extends StatefulWidget {
@@ -20,10 +21,15 @@ class _UserListScreenState extends State<UserListScreen> {
   @override
   void initState() {
     super.initState();
+    initUserList();
+  }
+
+  void initUserList() async {
     futureUser = fetchUserList();
-    fetchUserList().then(
-      (userList) => Provider.of<UserListModel>(context).init(userList)
-    );
+    List<User> userList = await futureUser;
+    Provider.of<UserListModel>(context, listen: false).init(userList);
+    await UserSharedPreferencesUtils.putObjectList(userList);
+    print(UserSharedPreferencesUtils.getObjectList());
   }
 
   @override
