@@ -1,12 +1,27 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_network/models/user.dart';
 import 'package:flutter_network/screens/user_modfication/user_modification_screen.dart';
+import 'package:flutter_network/services/user_api.dart';
+import 'package:flutter_network/providers/user_list_model.dart';
+import 'package:flutter_network/services/user_cache.dart';
+import 'package:provider/provider.dart';
 
 
 class UserDetailsScreen extends StatelessWidget {
   const UserDetailsScreen({Key? key, required this.user}) : super(key: key);
 
   final User user;
+
+  void removeUser(BuildContext context) async {
+    deleteUser(user);
+    List<User> currentUserList = UserSharedPreferencesUtils.getObjectList();
+    List<User> userList = currentUserList.where((i) => i.userId != user.userId).toList();
+    await UserSharedPreferencesUtils.putObjectList(userList);
+    Provider.of<UserListModel>(context, listen: false).setUserList(userList);
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +37,7 @@ class UserDetailsScreen extends StatelessWidget {
           Text(user.email),
           const Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"), 
           GestureDetector(
-            onTap: () {
-              print('removing user');
-            },
+            onTap: () => removeUser(context),
             child: const Text("Remove user"),
           ),
           GestureDetector(

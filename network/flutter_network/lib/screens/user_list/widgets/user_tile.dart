@@ -20,7 +20,15 @@ class UserTile extends StatelessWidget {
         },
         child: Row(
           children: [
-            Image.network(user.avatar),
+            Container(
+              alignment: Alignment.center, // This is needed
+              child: Image.network(
+                user.avatar,
+                fit: BoxFit.cover,
+                width: 150,
+                height: 150
+              ),
+            ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

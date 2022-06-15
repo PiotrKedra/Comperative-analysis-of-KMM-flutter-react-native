@@ -41,8 +41,11 @@ class _UserModificationScreenState extends State<UserModificationScreen> {
     newUserList.sort((a, b) => a.userId.compareTo(b.userId));
     await UserSharedPreferencesUtils.putObjectList(newUserList);
     Provider.of<UserListModel>(context, listen: false).setUserList(newUserList);
+    
     Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    if (widget.user != null) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<List<User>> updateUserList() async {
