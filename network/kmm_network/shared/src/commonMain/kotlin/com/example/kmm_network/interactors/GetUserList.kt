@@ -15,18 +15,11 @@ class GetUserList(
     private val userCache: UserCache
 ) {
 
-    fun execute(page: Int) : CommonFlow<DataState<List<User>>> = flow {
-
+    fun execute(page: Int): CommonFlow<DataState<List<User>>> = flow {
         emit(DataState.loading())
-
         try {
             val users = userService.getUsers(page)
-
-            delay(500)
-
-            userCache.insert(users)
-
-            emit(DataState.success(data = userCache.getAll(page)))
+            emit(DataState.success(data = users))
         } catch (e: Exception) {
             emit(DataState.error(message = e.message ?: "Unknown error"))
         }

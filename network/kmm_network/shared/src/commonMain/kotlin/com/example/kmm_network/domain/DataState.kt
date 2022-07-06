@@ -11,7 +11,7 @@ data class DataState<T>(
         fun <T> success(
             data: T? = null,
             message: String? = null,
-        ) : DataState<T> {
+        ): DataState<T> {
             return DataState(
                 data = data,
                 message = message
@@ -20,11 +20,11 @@ data class DataState<T>(
 
         fun <T> error(
             message: String,
-        ) : DataState<T> {
+        ): DataState<T> {
             return DataState(message = message)
         }
 
-        fun <T> loading() : DataState<T> {
+        fun <T> loading(): DataState<T> {
             return DataState(isLoading = true)
         }
     }
