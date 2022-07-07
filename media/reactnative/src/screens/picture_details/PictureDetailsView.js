@@ -3,13 +3,13 @@ import { SafeAreaView, Text, Image, StyleSheet } from 'react-native';
 
 const PictureDetailsView = ({navigation, route}) => {
 
-  const base64 = route.params;
+  const uri = route.params.uri;
 
   console.log(route)
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image style={styles.image} source={{ uri: "data:image/jpg;base64," + base64 }}/>
+      <Image style={styles.image} source={{ uri: uri }}/>
     </SafeAreaView>
   );
 }

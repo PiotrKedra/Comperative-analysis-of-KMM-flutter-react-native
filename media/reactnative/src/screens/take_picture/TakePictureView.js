@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library'
 import { Button, Text, View, StyleSheet } from 'react-native';
-import { PICTURE_DETAILS_SCREEN } from '../../navigation/ROUTES';
+import { PICTURE_DETAILS_ROUTE } from '../../navigation/ROUTES';
 
 const TakePictureView = ({navigation}) => {
-  const  cameraRef = useRef()
+  const cameraRef = useRef()
   const [hasCameraPermission, setHasCameraPermission] = useState(undefined)
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(undefined)
   const [photo, setPhoto] = useState()
@@ -33,11 +33,18 @@ const TakePictureView = ({navigation}) => {
     }
 
     const newPhoto = await cameraRef.current.takePictureAsync(options);
-    // setPhoto(newPhoto)
 
-    MediaLibrary.saveToLibraryAsync(newPhoto.uri).then(() => console.log('Photo saved'))
+    const asset = await MediaLibrary.createAssetAsync(newPhoto.uri);
 
-    navigation.navigate(PICTURE_DETAILS_SCREEN, newPhoto.base64)
+    MediaLibrary.createAlbumAsync('Expo', asset)
+      .then(() => {
+        console.log('Album created!');
+      })
+      .catch(error => {
+        console.log('err', error);
+      });
+
+    navigation.navigate(PICTURE_DETAILS_ROUTE, { uri: "data:image/jpg;base64," + newPhoto.base64 })
   }
 
   return (
@@ -53,12 +60,12 @@ export default TakePictureView;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    height: '100%',
+    justifyContent: 'flex-end'
   },
   btnContainer: {
     backgroundColor: '#fff',
-    alignSelf: 'flex-end'
+    alignSelf: 'center',
+    marginBottom: 40
   }
 })

@@ -1,3 +1,7 @@
 export const MEDIA_LIST_ROUTE = "mediaListRoute"
 export const TAKE_PICTURE_ROUTE = "takePictureRoute"
-export const PICTURE_DETAILS_SCREEN = "pictureRoute"
+export const PICTURE_DETAILS_ROUTE = "pictureRoute"
+export const RECORD_VIDEO_ROUTE = "recordVideoRoute"
+export const VIDEO_DETAILS_ROUTE = "videoRoute"
+export const RECORD_AUDIO_ROUTE = "recordAudioRoute"
+export const AUDIO_DETAILS_ROUTE = "audioDetailsRoute"
