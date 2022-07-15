@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_media/screens/record_audio_screen.dart';
 import 'package:flutter_media/screens/record_video_screen/record_video_screen.dart';
 import 'package:flutter_media/screens/take_picture/take_picture_screen.dart';
 
@@ -60,6 +61,18 @@ class _HomeScreen extends State<HomeScreen> {
               );
             },
             child: const Text('Record video'),
+          ),
+          TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const RecordAudioScreen())
+              );
+            },
+            child: const Text('Record audio'),
           )
         ]
       ),
