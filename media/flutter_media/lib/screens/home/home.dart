@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_media/screens/record_video_screen/record_video_screen.dart';
 import 'package:flutter_media/screens/take_picture/take_picture_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,16 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreen extends State<HomeScreen> {
 
   _getMedia() async {
-    print('DDDD');
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
-
-    if (result != null) {
-      List<File> files = result.paths.map((path) => File(path!)).toList();
-
-      print(files);
-    } else {
-      // User canceled the picker
-    }
+    print("Media");
   }
 
   @override
@@ -62,8 +53,13 @@ class _HomeScreen extends State<HomeScreen> {
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
             ),
-            onPressed: () { },
-            child: const Text('TextButton'),
+            onPressed: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const RecordVideoScreen())
+              );
+            },
+            child: const Text('Record video'),
           )
         ]
       ),
