@@ -22,7 +22,8 @@ fun CameraPreview(
     imageCapture: ImageCapture? = null,
     preview: Preview = remember { Preview.Builder().build() },
     enableTorch: Boolean = false,
-    focusOnTap: Boolean = false
+    focusOnTap: Boolean = false,
+    videoCapture: VideoCapture,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -38,7 +39,7 @@ fun CameraPreview(
             it.bindToLifecycle(
                 lifecycleOwner,
                 cameraSelector,
-                *listOfNotNull(imageAnalysis, imageCapture, preview).toTypedArray()
+                *listOfNotNull(imageAnalysis, videoCapture, preview).toTypedArray()
             )
         }
     }

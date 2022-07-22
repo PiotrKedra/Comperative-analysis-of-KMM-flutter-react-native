@@ -49,4 +49,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.6.0-RC")
 
     implementation("io.coil-kt:coil-compose:1.4.0")
+
+    implementation("com.google.android.exoplayer:exoplayer:2.16.1")
+
 }
