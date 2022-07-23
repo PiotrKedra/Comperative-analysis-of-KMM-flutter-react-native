@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainView() {
 
+
     val context: Context = LocalContext.current
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 

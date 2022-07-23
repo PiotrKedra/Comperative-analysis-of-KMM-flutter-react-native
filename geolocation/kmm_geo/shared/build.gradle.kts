@@ -20,10 +20,7 @@ kotlin {
         ios.deploymentTarget = "14.1"
         podfile = project.file("../iosApp/Podfile")
         framework {
-            baseName = "MultiPlatformLibrary"
-
-            export("dev.icerock.moko:mvvm-core:$mokoMvvmVersion")
-            export("dev.icerock.moko:mvvm-flow:$mokoMvvmVersion")
+            baseName = "shared"
         }
     }
 
