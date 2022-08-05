@@ -32,7 +32,6 @@ fun CameraPreview(
         value = ProcessCameraProvider.getInstance(context).await()
     }
 
-    // TODO: add cameraSelector
     val camera = remember(cameraProvider) {
         cameraProvider?.let {
             it.unbindAll()
