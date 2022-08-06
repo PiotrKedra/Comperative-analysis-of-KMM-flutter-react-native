@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import com.example.kmm_performance.KtorClientFactory
 import com.example.kmm_performance.User
 import com.example.kmm_performance.UserServiceImpl
+import com.example.kmm_performance.pref.KMMStorage
 import kotlinx.coroutines.launch
-import kotlin.system.measureNanoTime
 import kotlin.system.measureTimeMillis
 
 class MainActivity : ComponentActivity() {
@@ -28,9 +28,11 @@ class MainActivity : ComponentActivity() {
 
         val service = UserServiceImpl(KtorClientFactory().build())
 
+        val kmmStorage = KMMStorage(this)
+
         setContent {
             MaterialTheme {
-                MainView(service = service)
+                MainView(service = service, pref = kmmStorage)
             }
         }
     }
@@ -38,13 +40,17 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainView(
-    service: UserServiceImpl
+    service: UserServiceImpl,
+    pref: KMMStorage
 ) {
 
     val coroutineScope = rememberCoroutineScope()
 
     val (list, setList) = remember { mutableStateOf<List<User>?>(null) }
+    val (s, setS) = remember { mutableStateOf<String>("") }
     val (fetchTime, setFetchTime) = remember { mutableStateOf<Long>(0) }
+    val (saveTime, setSaveTime) = remember { mutableStateOf<Long>(0) }
+    val (readTime, setReadTime) = remember { mutableStateOf<Long>(0) }
 
     val fetch: () -> Unit = {
         coroutineScope.launch {
@@ -56,6 +62,21 @@ fun MainView(
         }
     }
 
+    val saveData: () -> Unit = {
+        val elapsed = measureTimeMillis {
+            pref.putString("json", list.toString())
+        }
+        setSaveTime(elapsed)
+    }
+
+    val readData: () -> Unit = {
+        val elapsed = measureTimeMillis {
+            val string = pref.getString("json")
+            setS(string)
+        }
+        setReadTime(elapsed)
+    }
+
     Column(
         Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -64,6 +85,15 @@ fun MainView(
         Text(text = "$fetchTime miliseconds")
         Button(onClick = { fetch() }) {
             Text(text = "Measure fetch api")
+        }
+        Text(text = "$saveTime miliseconds")
+        Button(onClick = { saveData() }) {
+            Text(text = "Measure save")
+        }
+        Text(text = "$s")
+        Text(text = "$readTime miliseconds")
+        Button(onClick = { readData() }) {
+            Text(text = "Measure read")
         }
     }
 }
